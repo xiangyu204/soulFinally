@@ -1,0 +1,116 @@
+/* ===== 高级简约：设计令牌与折叠组件 ===== */
+:root {
+  --ui-radius-sm: 10px;
+  --ui-radius: 14px;
+  --ui-radius-lg: 18px;
+  --ui-gap: 16px;
+  --ui-border: rgba(255, 255, 255, 0.09);
+  --ui-border-strong: rgba(255, 255, 255, 0.16);
+  --ui-surface: rgba(255, 255, 255, 0.03);
+  --ui-surface-2: rgba(255, 255, 255, 0.05);
+  --ui-text: rgba(255, 255, 255, 0.92);
+  --ui-text-dim: rgba(255, 255, 255, 0.55);
+  --ui-accent: #7c6cff;
+}
+
+/* ---------- 筛选面板：可折叠 ---------- */
+.match-filter-box {
+  position: relative;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--ui-text-dim);
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-sm);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.filter-toggle:hover {
+  color: var(--ui-text);
+  border-color: var(--ui-border-strong);
+}
+
+.filter-toggle .ft-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-toggle .ft-caret {
+  display: inline-flex;
+  transition: transform 0.22s ease;
+}
+
+.match-filter-box.collapsed .ft-caret {
+  transform: rotate(-90deg);
+}
+
+.match-filter-box.collapsed .filter-group,
+.match-filter-box.collapsed .match-btn {
+  display: none;
+}
+
+/* 折叠时给一行摘要 */
+.filter-summary {
+  display: none;
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--ui-text-dim);
+  line-height: 1.6;
+}
+
+.match-filter-box.collapsed .filter-summary {
+  display: block;
+}
+
+/* ---------- 设置分区：点击标题折叠 ---------- */
+.settings-section h2 {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-section h2 .sec-caret {
+  font-size: 11px;
+  color: var(--ui-text-dim);
+  transition: transform 0.2s ease;
+}
+
+.settings-section.collapsed h2 .sec-caret {
+  transform: rotate(-90deg);
+}
+
+.settings-section.collapsed > *:not(h2) {
+  display: none;
+}
+
+/* ---------- 统一细节 ---------- */
+.settings-card,
+.match-filter-box {
+  border-radius: var(--ui-radius-lg);
+}
+
+.settings-row {
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 720px) {
+  .settings-section h2 {
+    padding: 12px 0;
+  }
+}

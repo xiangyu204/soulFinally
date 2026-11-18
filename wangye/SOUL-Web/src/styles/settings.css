@@ -1,0 +1,175 @@
+.settings-page {
+  min-height: calc(100vh - 80px);
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.settings-card {
+  width: 100%;
+  max-width: 760px;
+  padding: 36px;
+  border-radius: 24px;
+  background: rgba(24, 26, 40, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+.settings-card h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #c8a8ff;
+}
+
+.settings-section {
+  margin-bottom: 28px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(12, 14, 25, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-section h2 {
+  margin-bottom: 18px;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  color: #cfd2e6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row strong {
+  color: #ffffff;
+}
+/* 主题选择行 */
+.theme-row {
+  align-items: flex-start;
+}
+
+/* 主题卡片外层 */
+.theme-card-group {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* 主题卡片 */
+.theme-card {
+  width: 130px;
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(190, 160, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+/* 鼠标经过 */
+.theme-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(190, 160, 255, 0.7);
+}
+
+/* 当前选中卡片 */
+.theme-card.active {
+  border-color: #b98cff;
+  box-shadow: 0 0 18px rgba(185, 140, 255, 0.5);
+}
+
+/* 主题预览小图 */
+.theme-preview {
+  height: 72px;
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* 深色预览 */
+.theme-preview-dark {
+  background: linear-gradient(135deg, #070a14, #252034);
+}
+
+/* 浅色预览 */
+.theme-preview-light {
+  background: linear-gradient(135deg, #ffffff, #eef1ff);
+}
+
+/* 预览里的导航条 */
+.theme-preview-nav {
+  width: 75%;
+  height: 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #b98cff, #4776ff);
+}
+
+/* 预览里的卡片 */
+.theme-preview-card {
+  width: 52%;
+  height: 28px;
+  border-radius: 10px;
+  background: rgba(185, 140, 255, 0.35);
+}
+
+/* 主题名称 */
+.theme-card p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 打勾位置 */
+.theme-check {
+  height: 24px;
+  margin-top: 8px;
+  color: #b98cff;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 24px;
+}
+.settings-card {
+  position: relative;
+}
+
+.settings-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.12);
+  color: inherit;
+
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s ease;
+}
+
+.settings-close-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.08);
+}

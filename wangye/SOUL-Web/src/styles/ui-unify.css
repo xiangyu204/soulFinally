@@ -1,0 +1,122 @@
+/* ===== 全站统一：深色 + 发丝边 + 大圆角 ===== */
+:root {
+  --u-radius: 16px;
+  --u-radius-sm: 12px;
+  --u-line: rgba(255, 255, 255, 0.08);
+  --u-line-strong: rgba(255, 255, 255, 0.14);
+  --u-surface: rgba(255, 255, 255, 0.03);
+  --u-surface-hover: rgba(255, 255, 255, 0.06);
+  --u-dim: rgba(255, 255, 255, 0.55);
+}
+
+/* 顶部导航：毛玻璃 + 发丝线 */
+.navbar {
+  background: rgba(10, 10, 12, 0.72) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--u-line) !important;
+  box-shadow: none !important;
+}
+
+/* 页面容器统一圆角与边框 */
+.match-page,
+.friends-page,
+.board-page,
+.settings-card,
+.chat-shell,
+.chat-main,
+.profile-card {
+  border-radius: var(--u-radius) !important;
+  border: 1px solid var(--u-line) !important;
+  box-shadow: none !important;
+}
+
+/* 卡片类统一 */
+.match-filter-box,
+.skill-card,
+.friend-card,
+.board-card,
+.settings-section,
+.match-user-card {
+  background: var(--u-surface) !important;
+  border: 1px solid var(--u-line) !important;
+  border-radius: var(--u-radius) !important;
+  box-shadow: none !important;
+}
+
+.match-user-card:hover,
+.friend-card:hover,
+.board-card:hover,
+.skill-card:hover {
+  background: var(--u-surface-hover) !important;
+  border-color: var(--u-line-strong) !important;
+}
+
+/* 按钮统一 */
+button,
+.match-btn,
+.hero-btn,
+.friends-primary,
+.friends-ghost,
+.friends-danger {
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
+}
+
+.match-btn:hover,
+.friends-primary:hover {
+  transform: translateY(-1px);
+}
+
+/* 输入框统一 */
+input,
+select,
+textarea,
+.lang-select {
+  border-radius: var(--u-radius-sm) !important;
+  border: 1px solid var(--u-line-strong) !important;
+  background: rgba(0, 0, 0, 0.22) !important;
+  box-shadow: none !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(140, 120, 255, 0.7) !important;
+  outline: none;
+}
+
+/* 空状态统一 */
+.empty-text,
+.friends-empty {
+  color: var(--u-dim) !important;
+  font-size: 14px;
+}
+
+/* ===== 强制浅色文本：避免标题继承到深色 ===== */
+.match-page h1,
+.friends-page h1,
+.board-page h1,
+.settings-page h1,
+.settings-card h1,
+.match-head h1,
+.match-page h2,
+.friends-page h2,
+.settings-card h2 {
+  color: #ffffff !important;
+}
+
+.match-page p,
+.friends-page p,
+.board-page p,
+.match-page .empty-text,
+.match-empty p {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+/* 营销页根容器（仅首页） */
+.marketing-root {
+  min-height: 100vh;
+  background: #e5e5e5;
+}

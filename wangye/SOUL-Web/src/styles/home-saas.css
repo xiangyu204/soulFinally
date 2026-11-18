@@ -1,0 +1,435 @@
+/* ===== 首页：浅灰外框 + 深色沉浸式容器 ===== */
+.saas-outer {
+  min-height: 100vh;
+  background: #e5e5e5;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.saas-shell {
+  position: relative;
+  min-height: calc(100vh - 32px);
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0a0a0a;
+  color: #fff;
+}
+
+/* ---------- Hero ---------- */
+.saas-hero {
+  position: relative;
+  min-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+}
+
+.saas-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    url('/hero.jpg') center/cover no-repeat,
+    radial-gradient(900px 520px at 50% 120%, #1a1a2e 0%, #0a0a0a 70%);
+}
+
+.saas-hero-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.saas-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(1080px, calc(100% - 32px));
+  margin: 22px auto 0;
+  padding: 8px 10px 8px 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.saas-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.saas-nav-links::-webkit-scrollbar { display: none; }
+
+.saas-nav-links button,
+.saas-link {
+  padding: 8px 11px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.saas-nav-links button:hover,
+.saas-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.saas-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saas-btn-solid {
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #000;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.saas-btn-solid:hover { opacity: 0.92; transform: translateY(-1px); }
+
+.saas-btn-lg {
+  padding: 13px 26px;
+  font-size: 14px;
+}
+
+.saas-btn-ghost {
+  padding: 13px 26px;
+  font-size: 14px;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.saas-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+/* ---------- Hero 文案 ---------- */
+.saas-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  margin: auto;
+  padding: 88px 24px 24px;
+  text-align: center;
+}
+
+/* ---------- 标题上方的全局翻译 / 三语切换 ---------- */
+.saas-langbar {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  padding: 3px 4px 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.saas-langbar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 2px;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.66);
+  white-space: nowrap;
+}
+
+.saas-langbar-divider {
+  width: 1px;
+  height: 14px;
+  margin: 0 4px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.saas-langbar-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.saas-langbar-lbl-short { display: none; }
+
+.saas-nav-actions { flex-wrap: nowrap; }
+
+.saas-langbar-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.saas-langbar-btn.is-active {
+  color: #000;
+  background: #fff;
+  font-weight: 600;
+}
+
+.saas-hero-copy h1 {
+  margin: 0;
+  font-size: clamp(34px, 5.2vw, 58px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.8px;
+  color: #ffffff !important;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+
+.saas-grad {
+  background: linear-gradient(92deg, #ffffff 8%, #b9afff 55%, #8fd8ff 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.saas-sub {
+  max-width: 34rem;
+  margin: 20px auto 0;
+  font-size: 16px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+.saas-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* ---------- 底部技能墙 ---------- */
+.saas-trust {
+  position: relative;
+  z-index: 2;
+  padding: 0 24px 34px;
+  text-align: center;
+}
+
+.saas-trust-label {
+  margin: 0 0 14px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.saas-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 26px;
+  opacity: 0.6;
+}
+
+.saas-trust-item {
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+
+/* ---------- 技能墙（分类） ---------- */
+.saas-trust-line {
+  margin: 0 0 18px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.saas-trust-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.saas-trust-group {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.saas-trust-cat {
+  flex: none;
+  min-width: 52px;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  text-align: right;
+}
+
+.saas-trust-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.saas-chip {
+  padding: 5px 12px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .saas-trust-cat { min-width: 0; text-align: center; }
+}
+
+/* ---------- 特性区 ---------- */
+.saas-features {
+  padding: 140px 24px;
+  background: #0a0a0a;
+}
+
+.saas-features-head {
+  max-width: 760px;
+  margin: 0 auto 54px;
+  text-align: center;
+}
+
+.saas-eyebrow {
+  margin: 0 0 14px;
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+.saas-features-head h2 {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  color: #ffffff !important;
+}
+
+.saas-features-sub {
+  margin: 14px 0 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.74) !important;
+}
+
+.saas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.saas-card {
+  padding: 32px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.saas-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.saas-card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff !important;
+}
+
+.saas-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.saas-foot {
+  padding: 26px 24px 32px;
+  font-size: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.38);
+  background: #0a0a0a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 1024px) {
+  .saas-nav-links { display: none; }
+  .saas-grid { grid-template-columns: 1fr; gap: 16px; }
+  .saas-features { padding: 96px 20px; }
+}
+
+@media (max-width: 640px) {
+  .saas-outer { padding: 8px; }
+  .saas-shell { border-radius: 18px; }
+  .saas-hero { min-height: 78vh; }
+  .saas-hero-copy { padding-top: 64px; }
+  .saas-langbar { gap: 2px; padding: 3px 3px 3px 8px; }
+  .saas-langbar-label-text { display: none; }
+  .saas-langbar-divider { display: none; }
+  .saas-langbar-btn { padding: 4px 7px; font-size: 11.5px; }
+  .saas-langbar-lbl-full { display: none; }
+  .saas-langbar-lbl-short { display: inline; }
+}
+
+/* 精简版首页导航：只留字标 + 登录/注册 */
+.saas-nav-min {
+  justify-content: space-between !important;
+  padding: 10px 14px 10px 22px !important;
+}
+
+.saas-nav-brand {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: #fff;
+}

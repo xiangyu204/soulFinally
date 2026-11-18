@@ -1,0 +1,277 @@
+/* =========================================================
+   SOUL PREMIUM LAYER（收敛版）
+   只做两件事：
+   1) 顶部导航与内容之间的空白稍微收一点（不动其他页面间距）
+   2) 统一交互质感：焦点环、滚动条、按钮/输入框悬停
+   要回滚删掉 App.jsx 里这一行 import 即可
+========================================================= */
+
+:root {
+  --soul-surface: rgba(255, 255, 255, 0.045);
+  --soul-surface-strong: rgba(255, 255, 255, 0.07);
+  --soul-line: rgba(255, 255, 255, 0.075);
+  --soul-line-strong: rgba(255, 255, 255, 0.14);
+
+  --soul-text: #f4f6fa;
+  --soul-text-2: #a8b0c0;
+  --soul-text-3: #6c7488;
+
+  --soul-accent: #7c5cff;
+  --soul-accent-2: #22d3ee;
+  --soul-grad: linear-gradient(135deg, #7c5cff 0%, #22d3ee 100%);
+
+  --soul-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+}
+
+/* =========================================================
+   1. 顶部：去掉图标，只留 SOUL 字标；高度略收
+========================================================= */
+
+.navbar {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  height: 76px;
+  min-height: 76px;
+  padding: 0 clamp(24px, 7vw, 112px) !important;
+  gap: 16px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 18px;
+  width: auto !important;
+  margin-left: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  height: auto;
+  min-height: 0;
+  gap: 0;
+}
+
+.logo-title h2,
+.logo-title .logo-img {
+  display: none;
+}
+
+.logo-title::after {
+  content: "SOUL";
+  display: inline-block;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  background: var(--soul-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* 页面让位：原来 96 / 176，这里各收 20px，其余不动 */
+.hero,
+.match-page,
+.profile-page,
+.chat-page,
+.board-page,
+.board-detail-page,
+.settings-page,
+.auth-page {
+  margin-top: -76px !important;
+  padding-top: 152px !important;
+}
+
+.chat-page {
+  min-height: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  height: calc(100vh - 100px) !important;
+}
+
+/* =========================================================
+   2. 统一交互质感（不动布局尺寸）
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.13);
+  border-radius: var(--r-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.32);
+}
+
+.primary-btn,
+.hero-btn,
+.match-btn,
+.write-btn {
+  background: var(--soul-grad);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(124, 92, 255, 0.26);
+  transition: transform 0.18s var(--soul-ease), box-shadow 0.18s var(--soul-ease),
+    filter 0.18s var(--soul-ease);
+}
+
+.primary-btn:hover,
+.hero-btn:hover,
+.match-btn:hover,
+.write-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 32px rgba(124, 92, 255, 0.34);
+}
+
+/* =========================================================
+   3. 头像菜单里的语言切换
+========================================================= */
+
+.avatar-lang {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  margin: 4px 0 6px;
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.avatar-lang-label {
+  font-size: 12.5px;
+  color: var(--soul-text-3);
+  white-space: nowrap;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  margin: 0;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn {
+  min-width: 34px;
+  padding: 5px 9px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.18s var(--soul-ease), background 0.18s var(--soul-ease),
+    box-shadow 0.18s var(--soul-ease);
+}
+
+.lang-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn-active {
+  color: #fff;
+  background: var(--soul-grad);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+/* 未登录时的语言入口 */
+.auth-lang {
+  display: flex;
+  align-items: center;
+}
+
+/* =========================================================
+   4. 聊天：通话记录 = 居中系统气泡（移动端样式）
+========================================================= */
+
+.chat-system-bubble {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 78%;
+  margin: 10px auto;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  backdrop-filter: blur(10px);
+  color: var(--soul-text-3);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.chat-system-icon {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    height: 64px;
+    min-height: 64px;
+  }
+
+  .hero,
+  .match-page,
+  .profile-page,
+  .chat-page,
+  .board-page,
+  .board-detail-page,
+  .settings-page,
+  .auth-page {
+    margin-top: -64px !important;
+    padding-top: 128px !important;
+  }
+
+  .chat-page {
+    height: calc(100vh - 128px) !important;
+    padding-top: 128px !important;
+  }
+}

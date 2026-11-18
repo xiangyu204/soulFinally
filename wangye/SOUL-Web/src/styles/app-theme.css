@@ -1,0 +1,210 @@
+/* ===== App 内部统一：简约大气（细线 / 留白 / 无渐变） ===== */
+:root {
+  --app-bg: #0a0a0b;
+  --app-surface: rgba(255, 255, 255, 0.03);
+  --app-surface-2: rgba(255, 255, 255, 0.05);
+  --app-line: rgba(255, 255, 255, 0.08);
+  --app-line-strong: rgba(255, 255, 255, 0.14);
+  --app-text: #ffffff;
+  --app-dim: rgba(255, 255, 255, 0.62);
+  --app-faint: rgba(255, 255, 255, 0.42);
+  --app-radius: 16px;
+  --app-radius-sm: 12px;
+}
+
+/* ---------- 页面容器 ---------- */
+.friends-page,
+.quiz-page,
+.board-page,
+.settings-page,
+.match-page,
+.profile-page,
+.chat-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 24px 56px;
+  box-sizing: border-box;
+}
+
+/* ---------- 页面标题 ---------- */
+.friends-head h1,
+.quiz-hero h1,
+.board-header h1,
+.board-page h1,
+.settings-card h1,
+.match-head h1,
+.chat-title {
+  margin: 0;
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--app-text) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.friends-head p,
+.quiz-hero p,
+.match-sub,
+.settings-card > p {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--app-dim) !important;
+}
+
+/* ---------- 卡片表面 ---------- */
+.friends-card,
+.post-card,
+.quiz-panel,
+.settings-card,
+.settings-section,
+.match-filter-box,
+.chat-sidebar,
+.chat-main,
+.profile-card {
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-line) !important;
+  border-radius: var(--app-radius) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* 去掉旧的渐变背景 */
+.quiz-hero,
+.settings-card,
+.match-head,
+.chat-header,
+.chat-sidebar,
+.chat-main,
+.friends-head {
+  background-image: none !important;
+}
+
+/* ---------- 列表行 ---------- */
+.settings-row,
+.friend-item,
+.chat-user-item,
+.post-footer {
+  border-bottom: 1px solid var(--app-line);
+}
+
+.settings-row:last-child,
+.friend-item:last-child,
+.chat-user-item:last-child {
+  border-bottom: none;
+}
+
+.settings-row span,
+.friends-muted,
+.chat-user-info span,
+.post-author .author-name {
+  color: var(--app-dim) !important;
+}
+
+.settings-row strong,
+.friend-meta strong,
+.chat-user-info strong,
+.post-title {
+  color: var(--app-text) !important;
+  font-weight: 600;
+}
+
+/* ---------- 按钮 ---------- */
+.friends-primary,
+.quiz-btn-primary,
+.match-primary-btn,
+.settings-save,
+.board-write-btn,
+.chat-send-btn {
+  color: #0b0b10 !important;
+  background: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.friends-ghost,
+.friends-danger,
+.quiz-btn-secondary,
+.match-ghost-btn,
+.settings-close-btn {
+  color: rgba(255, 255, 255, 0.85) !important;
+  background: transparent !important;
+  border: 1px solid var(--app-line-strong) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+}
+
+.friends-primary:hover,
+.quiz-btn-primary:hover,
+.match-primary-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* ---------- 输入框 ---------- */
+.friends-page input,
+.friends-page textarea,
+.quiz-page input,
+.quiz-page textarea,
+.settings-page select,
+.chat-search,
+.chat-input input,
+.chat-input textarea {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid var(--app-line-strong) !important;
+  border-radius: var(--app-radius-sm) !important;
+  color: var(--app-text) !important;
+  box-shadow: none !important;
+}
+
+.friends-page input:focus,
+.quiz-page input:focus,
+.chat-input input:focus {
+  border-color: rgba(140, 120, 255, 0.7) !important;
+  outline: none !important;
+}
+
+/* ---------- 聊天气泡 ---------- */
+.message {
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.message.sent,
+.message.sent * {
+  color: #fff;
+}
+
+/* ---------- 徽标 / 标签 ---------- */
+.friends-badge,
+.post-category,
+.post-tag,
+.quiz-type-card {
+  background: var(--app-surface-2) !important;
+  border: 1px solid var(--app-line) !important;
+  color: var(--app-dim) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+}
+
+/* ---------- 空状态 ---------- */
+.empty-text,
+.friends-empty,
+.friends-muted {
+  color: var(--app-faint) !important;
+}
+
+/* ---------- 移动端 ---------- */
+@media (max-width: 640px) {
+  .friends-page,
+  .quiz-page,
+  .board-page,
+  .settings-page,
+  .match-page,
+  .chat-page {
+    padding: 20px 16px 40px;
+  }
+}

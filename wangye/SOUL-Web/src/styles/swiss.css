@@ -1,0 +1,248 @@
+/* ===== App 内部：瑞士国际主义风格（网格 / 强对比 / 无圆角） ===== */
+:root {
+  --sw-line: rgba(255, 255, 255, 0.16);
+  --sw-line-strong: rgba(255, 255, 255, 0.34);
+  --sw-dim: rgba(255, 255, 255, 0.6);
+  --sw-faint: rgba(255, 255, 255, 0.42);
+}
+
+/* ---------- 页面：顶部粗线 + 大留白 ---------- */
+.friends-page,
+.quiz-page,
+.board-page,
+.settings-page,
+.match-page,
+.profile-page,
+.chat-page {
+  padding: 26px 28px 64px !important;
+  max-width: 1240px;
+  margin: 0 auto;
+  border-top: none;
+}
+
+/* ---------- 标题：瑞士式字阶 + 方形标记 ---------- */
+.friends-head h1,
+.quiz-hero h1,
+.board-page h1,
+.settings-card h1,
+.match-head h1,
+.chat-title {
+  font-size: clamp(26px, 3vw, 34px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.1 !important;
+  color: #fff !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.friends-head h1::before,
+.quiz-hero h1::before,
+.board-page h1::before,
+.settings-card h1::before,
+.match-head h1::before,
+.chat-title::before {
+  content: none;
+}
+
+/* 小标签 / 说明文字 */
+.friends-head p,
+.quiz-hero p,
+.match-sub,
+.settings-card > p {
+  margin: 10px 0 0 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.02em;
+  color: var(--sw-dim) !important;
+  max-width: 62ch;
+}
+
+/* ---------- 卡片：直角 + 发丝线 + 透明底 ---------- */
+.friends-card,
+.post-card,
+.quiz-panel,
+.settings-card,
+.settings-section,
+.match-filter-box,
+.chat-sidebar,
+.chat-main,
+.profile-card,
+.match-user-card {
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.match-user-card:hover,
+.post-card:hover,
+.friend-card:hover {
+  background: rgba(255, 255, 255, 0.075) !important;
+}
+
+/* ---------- 按钮：直角 + 大写字距 ---------- */
+.friends-primary,
+.quiz-btn-primary,
+.match-primary-btn,
+.board-write-btn,
+.chat-send-btn,
+.friends-ghost,
+.friends-danger,
+.quiz-btn-secondary,
+.match-ghost-btn {
+  border-radius: 0 !important;
+  padding: 11px 22px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase;
+  box-shadow: none !important;
+}
+
+.friends-primary,
+.quiz-btn-primary,
+.match-primary-btn,
+.board-write-btn,
+.chat-send-btn {
+  background: #fff !important;
+  color: #000 !important;
+  border: none !important;
+}
+
+.friends-ghost,
+.friends-danger,
+.quiz-btn-secondary,
+.match-ghost-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+/* ---------- 输入框：直角 + 细线 ---------- */
+.friends-page input,
+.friends-page textarea,
+.quiz-page input,
+.quiz-page textarea,
+.settings-page select,
+.chat-search,
+.chat-input input,
+.chat-input textarea {
+  border-radius: 12px !important;
+  border: none !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  padding: 12px 14px !important;
+  color: #fff !important;
+}
+
+.friends-page input:focus,
+.quiz-page input:focus,
+.chat-input input:focus {
+  background: rgba(255, 255, 255, 0.1) !important;
+  outline: none !important;
+}
+
+/* ---------- 聊天气泡：直角 ---------- */
+.message {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ---------- 标签 / 徽标 ---------- */
+.friends-badge,
+.post-category,
+.post-tag {
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: none !important;
+  color: var(--sw-dim) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- 导航：白字标 + 下划线选中 ---------- */
+.navbar .logo-title .logo-img {
+  display: none !important;
+}
+
+.navbar .logo-title::after {
+  content: 'SOUL';
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: #fff;
+}
+
+.navbar .nav-links a {
+  border-radius: 0 !important;
+  padding: 6px 0 !important;
+  margin: 0 14px !important;
+  font-size: 11.5px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+  color: var(--sw-dim) !important;
+}
+
+.navbar .nav-links a:hover {
+  color: #fff !important;
+}
+
+.navbar .nav-links a.active,
+.navbar .nav-links a[aria-current='page'] {
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+/* ---------- 设置行：更克制的分隔 ---------- */
+.settings-row {
+  border-bottom: none !important;
+  padding: 14px 0 !important;
+}
+
+/* ---------- 空状态 ---------- */
+.empty-text,
+.friends-empty,
+.match-empty p {
+  color: var(--sw-faint) !important;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 640px) {
+  .friends-page,
+  .quiz-page,
+  .board-page,
+  .settings-page,
+  .match-page,
+  .chat-page {
+    padding: 20px 16px 48px !important;
+  }
+}
+
+
+/* 修正：旧规则给了负 margin，导致页面顶到导航条下面 */
+.friends-page,
+.quiz-page,
+.board-page,
+.settings-page,
+.match-page,
+.profile-page,
+.chat-page {
+  margin: 0 auto !important;
+  background-image: none !important;
+  padding-top: 30px !important;
+}
+
+/* 去掉残留的紫色径向渐变 */
+.match-page::before,
+.match-page::after,
+.friends-page::before,
+.settings-page::before,
+.quiz-page::before {
+  background: none !important;
+  content: none !important;
+}

@@ -1,0 +1,233 @@
+/* =========================================================
+   SOUL 全局反馈系统：toast + 确认弹窗
+========================================================= */
+
+.soul-toast-stack {
+  position: fixed;
+  top: 88px;
+  right: 24px;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.soul-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 220px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(20, 23, 34, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px);
+  color: #f4f6fa;
+  font-size: 13.5px;
+  line-height: 1.5;
+  pointer-events: auto;
+  animation: soulToastIn 0.26s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.soul-toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.soul-toast-success .soul-toast-icon {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.soul-toast-error .soul-toast-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.soul-toast-warn .soul-toast-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.soul-toast-info .soul-toast-icon {
+  background: linear-gradient(135deg, #7c5cff, #22d3ee);
+}
+
+.soul-toast-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.soul-toast-close {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: color 0.16s ease;
+}
+
+.soul-toast-close:hover {
+  color: #fff;
+}
+
+/* 确认弹窗 */
+.soul-dialog-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 3100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(6, 8, 14, 0.66);
+  backdrop-filter: blur(8px);
+  animation: soulFadeIn 0.18s ease both;
+}
+
+.soul-dialog {
+  width: min(400px, 92vw);
+  padding: 24px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(32, 36, 54, 0.98), rgba(16, 18, 28, 0.99));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  animation: soulDialogIn 0.24s cubic-bezier(0.2, 1.1, 0.3, 1) both;
+}
+
+.soul-dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.soul-dialog-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #7c5cff, #22d3ee);
+}
+
+.soul-dialog-badge.is-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.soul-dialog-head h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f4f6fa;
+}
+
+.soul-dialog-text {
+  margin: 0 0 20px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.62);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.soul-dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.soul-dialog-btn {
+  min-width: 92px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.16s ease, filter 0.16s ease, background 0.16s ease;
+}
+
+.soul-dialog-btn:hover {
+  transform: translateY(-1px);
+}
+
+.soul-dialog-btn.ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.soul-dialog-btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.soul-dialog-btn.primary {
+  background: linear-gradient(135deg, #7c5cff, #22d3ee);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(124, 92, 255, 0.32);
+}
+
+.soul-dialog-btn.danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(220, 38, 38, 0.3);
+}
+
+@keyframes soulToastIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes soulDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes soulFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .soul-toast-stack {
+    top: auto;
+    bottom: 20px;
+    right: 12px;
+    left: 12px;
+    align-items: stretch;
+  }
+
+  .soul-toast {
+    max-width: none;
+  }
+}

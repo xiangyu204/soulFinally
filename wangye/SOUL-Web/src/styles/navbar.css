@@ -1,0 +1,609 @@
+/* =========================================================
+   NAVBAR
+   2026 AI Startup Glass UI
+========================================================= */
+
+/* 导航栏整体 */
+.navbar {
+  min-height: 96px;
+  padding: 22px 64px;
+  box-sizing: border-box;
+
+  display: grid !important;
+  grid-template-columns: 300px minmax(0, 1fr) 300px;
+  align-items: center;
+
+  position: relative;
+  z-index: 10000;
+  overflow: visible;
+}
+
+/* 让 nav-right 里面的 nav-links / user-box / auth-links 参与 navbar 的 grid 布局 */
+.nav-right {
+  display: contents !important;
+}
+
+/* =========================================================
+   LOGO AREA
+========================================================= */
+
+/* logo + 标题 */
+.logo-title {
+  grid-column: 1;
+  justify-self: start;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* logo 图片 */
+.logo-img {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+}
+
+/* logo 标题 */
+.logo-title h2 {
+  margin: 0;
+
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      white,
+      #c084fc,
+      #60a5fa
+    );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================================================
+   NAVIGATION LINKS
+========================================================= */
+
+/* 中间导航按钮 */
+.nav-links {
+  grid-column: 2;
+  justify-self: center;
+
+  position: static !important;
+  left: auto !important;
+  transform: none !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 42px;
+
+  overflow: visible;
+}
+
+/* 导航链接、登录链接、用户链接 */
+.nav-links a,
+.auth-links a,
+.profile-link {
+  position: relative;
+
+  color: #f3f4f6;
+  text-decoration: none;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  transition: .25s ease;
+}
+
+/* hover 效果 */
+.nav-links a:hover,
+.auth-links a:hover,
+.profile-link:hover {
+  color: #c084fc;
+}
+
+/* 底部渐变线动画 */
+.nav-links a::after,
+.auth-links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -6px;
+
+  width: 0;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c084fc,
+      #60a5fa
+    );
+
+  transition: .25s ease;
+}
+
+/* hover 展开线 */
+.nav-links a:hover::after,
+.auth-links a:hover::after {
+  width: 100%;
+}
+
+/* =========================================================
+   RIGHT AREA
+========================================================= */
+
+/* 未登录时：设置 / 登录 */
+.auth-links {
+  grid-column: 3;
+  justify-self: end;
+
+  display: flex;
+  align-items: center;
+  gap: 30px;
+
+  overflow: visible;
+}
+
+/* 已登录时：用户区域 */
+.user-box {
+  grid-column: 3;
+  justify-self: end;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  position: relative;
+  z-index: 10001;
+  overflow: visible;
+}
+
+/* 用户名 */
+.username,
+.username-link {
+  font-size: 17px;
+  font-weight: 700;
+  color: white;
+}
+
+/* =========================================================
+   LANGUAGE SELECT
+========================================================= */
+
+/* 语言选择框 */
+.lang-select {
+  padding: 10px 14px;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,.1);
+
+  background: rgba(20,20,32,.92);
+
+  color: white;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: .25s ease;
+}
+
+/* focus 效果 */
+.lang-select:focus {
+  outline: none;
+
+  border-color: #a855f7;
+
+  box-shadow:
+    0 0 0 4px rgba(168,85,247,.16);
+}
+
+/* =========================================================
+   USER AVATAR
+========================================================= */
+
+/* 头像按钮 */
+.avatar-menu-button {
+  width: 50px;
+  height: 50px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  position: relative;
+  z-index: 10002;
+}
+
+/* 用户头像 */
+.user-avatar {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 2px solid rgba(255,255,255,.12);
+
+  transition: .25s ease;
+}
+
+/* hover 发光 */
+.user-avatar:hover {
+  transform: scale(1.05);
+
+  box-shadow:
+    0 0 20px rgba(168,85,247,.4);
+}
+
+/* =========================================================
+   AVATAR DROPDOWN MENU
+========================================================= */
+
+.avatar-menu {
+  position: absolute;
+  top: 66px;
+  right: 0;
+
+  width: 280px;
+  padding: 16px;
+
+  border-radius: 18px;
+
+  background: rgba(28, 30, 45, 0.98);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+
+  z-index: 10003 !important;
+}
+
+.avatar-menu-top {
+  padding: 14px;
+  margin-bottom: 10px;
+
+  text-align: center;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.avatar-menu-img {
+  width: 58px;
+  height: 58px;
+
+  margin-bottom: 8px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.avatar-menu-top strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 15px;
+}
+
+.avatar-menu-top span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #cfd2e6;
+
+  font-size: 13px;
+}
+
+.avatar-menu-item {
+  width: 100%;
+
+  display: block;
+
+  padding: 14px 16px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  text-align: left;
+  text-decoration: none;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.avatar-menu-item:hover {
+  background: rgba(124, 92, 255, 0.18);
+}
+
+.avatar-menu-logout {
+  color: #ff9b9b;
+}
+
+/* =========================================================
+   LOGOUT BUTTON
+========================================================= */
+
+/* 退出按钮 */
+.logout-btn {
+  padding: 10px 16px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    opacity .25s ease;
+}
+
+/* hover */
+.logout-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(239,68,68,.35);
+}
+
+/* =========================================================
+   DROPDOWN LAYER FIX
+   防止头像菜单被其他页面遮挡
+========================================================= */
+
+.nav-right,
+.logo-title,
+.auth-links,
+.nav-links,
+.user-box {
+  overflow: visible;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .navbar {
+    display: flex !important;
+
+    min-height: auto;
+
+    padding: 18px 20px;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    grid-template-columns: none;
+  }
+
+  .logo-title {
+    grid-column: auto;
+    justify-self: auto;
+
+    gap: 14px;
+  }
+
+  .logo-img {
+    width: 62px;
+    height: 62px;
+  }
+
+  .logo-title h2 {
+    font-size: 22px;
+  }
+
+  .nav-right {
+    display: flex !important;
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    gap: 24px;
+
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    grid-column: auto;
+    justify-self: auto;
+
+    position: static !important;
+
+    display: flex;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 22px;
+  }
+
+  .auth-links {
+    grid-column: auto;
+    justify-self: auto;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+  }
+
+  .user-box {
+    grid-column: auto;
+    justify-self: auto;
+
+    gap: 14px;
+  }
+
+  .nav-links a,
+  .auth-links a,
+  .profile-link {
+    font-size: 15px;
+  }
+
+  .avatar-menu-button,
+  .user-avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .avatar-menu {
+    top: 56px;
+
+    right: auto;
+    left: 0;
+
+    width: 260px;
+  }
+}
+/* =========================================================
+   NAVBAR AND PAGE BLEND FIX
+   让导航栏和页面背景融合
+========================================================= */
+
+.navbar {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 9, 18, 0.86),
+      rgba(7, 9, 18, 0.58)
+    ) !important;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+
+  box-shadow: none !important;
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+/* 导航栏底部柔和过渡，不要突然断开 */
+.navbar::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -48px;
+
+  height: 48px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 9, 18, 0.48),
+      rgba(7, 9, 18, 0)
+    );
+
+  pointer-events: none;
+}
+/* ===============================
+   LANGUAGE SWITCH (added)
+================================*/
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  margin-right: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.lang-btn {
+  min-width: 34px;
+  padding: 5px 9px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.lang-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn-active {
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+@media (max-width: 900px) {
+  .lang-switch {
+    margin-right: 6px;
+    padding: 2px;
+  }
+  .lang-btn {
+    min-width: 28px;
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+}
+
+/* 顶部 logo 图片（作业版） */
+.logo-title .logo-img {
+  display: block;
+  height: 46px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+

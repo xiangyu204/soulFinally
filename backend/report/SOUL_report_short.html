@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>프로젝트 참여/기여 보고서 - SOUL (요약본)</title>
+<style>
+@page { size: A4; margin: 25mm 20mm; }
+body { font-family: "맑은 고딕","Malgun Gothic",sans-serif; font-size: 10.5pt; line-height: 1.6; color:#111; }
+h1 { font-size: 16pt; border-bottom: 2px solid #1f3a6e; padding-bottom: 4px; margin-top: 0; color:#1f3a6e; }
+h2 { font-size: 12.5pt; color:#1f3a6e; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 9.5pt; }
+th, td { border: 1px solid #555; padding: 4px 6px; vertical-align: top; }
+th { background: #dde6f5; }
+pre { background:#f4f4f4; border:1px solid #bbb; padding:6px; font-family: Consolas,"D2Coding",monospace; font-size: 8.5pt; white-space: pre-wrap; }
+.ph { background: #fff2a8; }
+.cover { text-align:center; }
+.pb { page-break-before: always; }
+.note { font-size: 9pt; color:#444; }
+</style></head><body>
+
+<div class="cover">
+<p style="margin-top:90px; font-size:12pt;">프로젝트 참여 · 기여 보고서</p>
+<h1 style="font-size:28pt; border:none; margin-top:50px;">SOUL 기술 교환 플랫폼</h1>
+<p style="font-size:15pt;">Android 앱 메인 UI 및 서버(API) 연동 개발</p>
+<p style="margin-top:120px;">
+<table style="width:70%; margin:auto; font-size:11.5pt;">
+<tr><th style="width:30%">과목명</th><td><span class="ph">[과목명]</span></td></tr>
+<tr><th>담당 교수</th><td><span class="ph">[교수님 성함]</span></td></tr>
+<tr><th>팀명</th><td><span class="ph">[팀명]</span></td></tr>
+<tr><th>담당 파트</th><td>Android 앱 — 메인 UI 및 백엔드 API 연동</td></tr>
+<tr><th>학과 / 학번</th><td><span class="ph">[학과] / [학번]</span></td></tr>
+<tr><th>이름</th><td><span class="ph">[이름]</span></td></tr>
+<tr><th>제출일</th><td>2026년 11월 10일</td></tr>
+</table></p>
+</div>
+
+<div class="pb"></div>
+<h1>목 차</h1>
+<p>1. 프로젝트 개요<br>2. 기술 스택과 시스템 구조<br>3. 본인 담당: Android 앱 (메인 UI · 서버 연동)<br>4. 문제 해결 과정<br>5. 실행 방법 및 시연<br>6. 회의 참여와 기여도<br>7. 한계 및 개선 계획<br>8. 느낀 점</p>
+<p class="note">※ 노란색 <span class="ph">[ ]</span> 표시는 본인이 직접 확인하여 채울 항목입니다.</p>
+
+<h1 style="margin-top:28px;">1. 프로젝트 개요</h1>
+<p>SOUL은 <b>가르칠 수 있는 기술</b>과 <b>배우고 싶은 기술</b>을 등록하면 서로 맞는 사용자를 연결해 주는 <b>기술 교환 플랫폼</b>이다. 앱은 한국어·영어·중국어를 지원하고, 대화에는 AI 번역을 제공한다.</p>
+<table>
+<tr><th style="width:22%">주요 기능</th><th>설명</th></tr>
+<tr><td>회원 · 프로필</td><td>가입(아이디 중복 확인), 로그인, 프로필 수정, 아바타 업로드</td></tr>
+<tr><td>매칭 · 친구</td><td>추천 매칭, 검색, 친구 신청·수락, 차단, 별명</td></tr>
+<tr><td>채팅</td><td>텍스트·이미지, 회수·삭제, 읽음 표시, AI 번역</td></tr>
+<tr><td>통화</td><td>1:1 음성·영상 통화, 다인 음성방 (Agora)</td></tr>
+<tr><td>그 밖의 기능</td><td>게시판, AI 기술 퀴즈, AI 고객센터</td></tr>
+</table>
+<table>
+<tr><th style="width:22%">이름</th><th style="width:22%">담당</th><th>역할</th></tr>
+<tr><td><span class="ph">[본인]</span></td><td>Android 앱</td><td>앱 메인 UI 구현, ViewModel · Retrofit 기반 서버 API 연동</td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td>백엔드</td><td>서버, REST API, DB, 외부 API 연동 <span class="ph">[담당자 확인]</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+
+<div class="pb"></div>
+<h1>2. 기술 스택과 시스템 구조</h1>
+<table>
+<tr><th style="width:22%">구분</th><th>내용</th></tr>
+<tr><td>Android 앱</td><td>Kotlin, Jetpack Compose(Material3), MVVM, Retrofit 2 / OkHttp / Gson, Navigation Compose, Coil, Haze(블러), Agora RTC SDK</td></tr>
+<tr><td>연동 서버</td><td>Spring Boot REST API + MariaDB (팀원 개발, 앱은 이 API를 호출). 외부 서비스: DeepSeek(AI 번역·퀴즈), Agora(음성·영상)</td></tr>
+<tr><td>개발 도구</td><td>Android Studio, IntelliJ IDEA, HeidiSQL <span class="ph">[Git 저장소 주소]</span></td></tr>
+</table>
+<pre>
+[ Android 앱 ]  --- HTTP/JSON (Retrofit) --->  [ Spring Boot 서버 ] ---> [ MariaDB ]
+      |                                              |
+      |                                              +---> [ DeepSeek API ]
+      +<------ 음성·영상 (서버는 토큰만 발급) ------> [ Agora 서버 ]
+</pre>
+
+<div class="pb"></div>
+<h1>3. 본인 담당: Android 앱 (메인 UI · 서버 연동)</h1>
+<p>Kotlin + Jetpack Compose로 만든 앱이며, Kotlin 파일 60개(약 18,700줄), 화면 24개 규모이다. 본인은 <b>메인 UI(화면 구성·디자인)</b>와 <b>서버와의 연결</b>을 맡았다.</p>
+<h2>3.1 화면 구성</h2>
+<p>로그인 후 하단 내비게이션 바의 4개 탭(<b>홈 · 탐색 · 매칭 · 채팅</b>)으로 이동하고, 프로필 · 설정 · 고객센터 · AI 퀴즈 · 로그아웃은 왼쪽 <b>프로필 드로어</b>에서 연다.</p>
+<table>
+<tr><th style="width:15%">화면</th><th>핵심 내용</th><th style="width:30%">서버 연동</th></tr>
+<tr><td>홈</td><td>사용자가 구슬로 떠 있는 회전 3D 행성(Canvas로 직접 그림), 매칭 시작 버튼</td><td><code>findMatches</code>, <code>fetchProfile</code></td></tr>
+<tr><td>탐색</td><td>검색창, 카테고리 칩 7개, 사용자 카드. 검색은 300ms 지연 후 요청</td><td><code>findMatches</code>, <code>searchUsers</code></td></tr>
+<tr><td>매칭</td><td>탭 4개(추천·친구·받은 신청·차단), 수락/거절/차단/별명, 매칭 성사 다이얼로그</td><td><code>acceptMatch</code>, <code>respondFriendRequest</code> 외</td></tr>
+<tr><td>채팅</td><td>말풍선, 텍스트·이미지 전송, 회수·삭제, 번역 토글, 통화 버튼. 전송하면 입력창을 즉시 비움</td><td><code>fetchMessages</code>, <code>sendMessage</code>, <code>sendImage</code> 외</td></tr>
+<tr><td>로그인 · 가입</td><td>입력 검사(아이디 3~20자, 이메일 형식, 비밀번호 6자 이상·일치), 로딩·오류 표시</td><td><code>login</code>, <code>checkUsername</code>, <code>register</code></td></tr>
+<tr><td>프로필</td><td>내 정보, 수정(사진 업로드), 상대 프로필(매칭률·별점·레이더 차트)</td><td><code>fetchProfile</code>, <code>uploadAvatar</code> 외</td></tr>
+<tr><td>AI 퀴즈</td><td>10문제 풀이, 진행 바, 점수·수준 표시</td><td><code>generateQuiz</code>, <code>submitAnswers</code></td></tr>
+</table>
+<p><span class="ph">[주요 화면 캡처: 로그인 / 홈 / 매칭 / 채팅 / 프로필]</span></p>
+<h2>3.2 UI 디자인</h2>
+<ul>
+<li><b>콘셉트</b>: 우주 테마. 다크 모드는 별이 반짝이는 짙은 배경과 청록·보라, 라이트 모드는 따뜻한 베이지·주황.</li>
+<li><b>유리 질감</b>: <code>soulGlass()</code> 하나로 뒤 배경 블러 + 반투명 그라디언트 + 테두리를 적용하여 카드마다 같은 모습을 유지.</li>
+<li><b>재사용 부품</b>: 카드, 그라디언트 버튼, 태그, 아바타, 스킬 칩 등을 공통 컴포넌트로 만들어 모든 화면에서 사용.</li>
+<li><b>테마·언어 전환</b>: 다크/라이트와 한국어·영어·중국어를 앱에서 바로 바꿀 수 있다.</li>
+</ul>
+<p><span class="ph">[다크 / 라이트 화면 비교 캡처]</span></p>
+
+
+<div class="pb"></div>
+<h2>3.3 서버 연동 방식</h2>
+<p>화면은 서버를 직접 부르지 않고 <b>화면 → ViewModel → Retrofit → 서버</b> 순서로 연결된다. ViewModel이 결과를 상태(로딩 / 성공 / 오류)로 바꿔 주면 화면은 그 상태만 보고 그린다.</p>
+<ul>
+<li><b>API 선언</b>: <code>SoulApiService</code>에 서버 엔드포인트 49개를 함수로 선언 (퀴즈 2개는 별도 인터페이스). 함수만 선언하면 Retrofit이 요청 코드를 만든다.</li>
+<li><b>서버 주소</b>: 빌드 설정으로 지정. 에뮬레이터 기본값은 PC를 가리키는 <code>http://10.0.2.2:8080/</code>이며, 로그인 화면에서 주소를 바꿀 수도 있다.</li>
+<li><b>타임아웃</b>: 일반 API 15초, AI 퀴즈는 읽기 60초 (AI 응답이 느려서).</li>
+<li><b>자동 갱신</b>: 서버가 먼저 알려 주는 방식이 없어 앱이 주기적으로 묻는다 — 채팅 약 2.5초, 채팅 목록·친구 신청 약 3초, 통화 수신 약 1.5~2초, 새 메시지 알림 약 5초.</li>
+</ul>
+<pre>
+// AuthViewModel.login() — 요약
+viewModelScope.launch {
+    _loginResult.value = LoginResult.Loading
+    val response = apiService.login(LoginRequest(username, pass))
+    if (response.isSuccessful &amp;&amp; response.body()?.success == true)
+        _loginResult.value = LoginResult.Success(username = body.username ?: username)
+    else
+        _loginResult.value = LoginResult.Error(body?.message ?: "Login failed")
+}
+
+// SoulApiService — Retrofit 선언
+@POST("api/login")
+suspend fun login(@Body request: LoginRequest): Response&lt;LoginResponse&gt;
+</pre>
+<p class="note">※ 위 ViewModel 코드는 원본을 요약한 것이고, 인터페이스 선언은 원본 그대로이다.</p>
+<h2>3.4 음성·영상 통화 (Agora) <span class="ph">[담당 확인]</span></h2>
+<ul>
+<li>발신: 서버에 통화 시작을 요청하고 상대가 받을 때까지 상태를 확인한다. 수신: 로그인 후 주기적으로 걸려 온 통화를 확인해 수락/거절 화면(오버레이)을 띄운다.</li>
+<li>통화가 성사되면 서버에서 <b>Agora 임시 토큰</b>을 받아 Agora 채널에 직접 입장한다. 앱에는 Agora 인증서를 두지 않는다.</li>
+<li>통화 중 음소거, 카메라 켜기/끄기·전환, 상대 소리 끄기를 지원한다.</li>
+</ul>
+
+<div class="pb"></div>
+<h1>4. 문제 해결 과정</h1>
+<h2>4.1 에뮬레이터에서 서버 접속</h2>
+<p>에뮬레이터 안의 <code>localhost</code>는 에뮬레이터 자신이라 PC의 서버에 닿지 않는다. 그래서 기본 주소를 <code>10.0.2.2</code>로 두고, 실제 기기에서는 PC의 IP를 입력하도록 했다. <span class="ph">[앱 개발 중 겪은 다른 문제와 해결 추가]</span></p>
+
+<h1 style="margin-top:28px;">5. 실행 방법 및 시연</h1>
+<ol>
+<li>MariaDB를 켜고 서버(<code>SoulBackendApplication</code>)를 실행한다 — 포트 8080, 서버는 하나만.</li>
+<li>Android Studio에서 <code>app/soul-android</code>를 열어 에뮬레이터로 실행한다. 통화는 마이크·카메라 권한이 필요하다.</li>
+</ol>
+<table>
+<tr><th style="width:6%">순서</th><th style="width:30%">시연</th><th>확인 포인트</th><th style="width:16%">증빙</th></tr>
+<tr><td>1</td><td>회원가입 · 로그인</td><td>입력 검사, 중복 아이디 거부, DB에 사용자 저장</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>2</td><td>홈 · 탐색 · 매칭</td><td>추천 목록, 검색, 친구 신청/수락</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>3</td><td>채팅 + 번역</td><td>메시지 전송·회수, 번역 토글</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>4</td><td>통화</td><td>수신 오버레이, 음성·영상 연결</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>5</td><td>언어·테마 전환</td><td>한/영/중, 다크/라이트</td><td><span class="ph">[캡처]</span></td></tr>
+</table>
+
+<div class="pb"></div>
+<h1>6. 회의 참여와 기여도</h1>
+<table>
+<tr><th style="width:6%">회차</th><th style="width:16%">일시</th><th>안건 / 결정</th><th style="width:22%">본인 역할</th></tr>
+<tr><td>1</td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: 주제·기능 범위]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>2</td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: API 명세 협의]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>3</td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: 앱-서버 연동 점검]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+<table>
+<tr><th style="width:16%">팀원</th><th style="width:14%">담당</th><th>기여 내용</th><th style="width:12%">기여도</th></tr>
+<tr><td><span class="ph">[본인]</span></td><td>Android 앱</td><td>메인 UI 화면 24개 · 공통 UI 부품 · 테마, ViewModel/Retrofit 서버 연동(API 49개 선언)</td><td><span class="ph">[ ]%</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td>백엔드</td><td>서버 · API 62개 · DB 12개 테이블</td><td><span class="ph">[ ]%</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]%</span></td></tr>
+</table>
+<p><b>증빙</b>: <span class="ph">[Git 커밋 내역(작성자별), 회의록·단체 채팅 캡처, Android Studio 프로젝트 구조 캡처]</span></p>
+
+<h1 style="margin-top:28px;">7. 한계 및 개선 계획</h1>
+<table>
+<tr><th style="width:20%">분류</th><th style="width:40%">현재 상태</th><th>개선 방안</th></tr>
+<tr><td>AI 키 보관</td><td>고객센터 화면이 DeepSeek를 앱에서 직접 호출하고 키가 앱 코드에 있음</td><td>서버의 AI API를 거치게 하고 키는 서버에만 보관</td></tr>
+<tr><td>앱 보안 설정</td><td>HTTP 통신 허용, 서명 정보가 빌드 파일에 있음, 난독화 미적용</td><td>HTTPS 적용, 서명 정보 분리, 난독화</td></tr>
+<tr><td>실시간성</td><td>채팅·통화를 주기적 조회로 갱신</td><td>WebSocket 또는 푸시(FCM)</td></tr>
+<tr><td>미완성 화면</td><td>일정·평가 화면이 서버와 연결되지 않음</td><td>서버 평가 API 연동, 일정 API 추가</td></tr>
+<tr><td>테스트</td><td>자동화 테스트 없음</td><td>ViewModel · API 테스트 추가</td></tr>
+</table>
+
+<h1 style="margin-top:28px;">8. 느낀 점</h1>
+<p class="note">※ 초안입니다. 본인의 경험에 맞게 고쳐 쓰세요.</p>
+<p>Android 앱의 메인 UI와 서버 연동을 맡아, 화면이 ViewModel과 Retrofit을 거쳐 서버와 데이터를 주고받는 흐름을 구체적으로 이해하게 되었다. 에뮬레이터에서 서버에 접속하지 못하는 문제처럼 환경 차이로 생기는 오류를, 추측하지 않고 하나씩 확인하며 원인을 좁혀 가는 방법을 배웠다. 보안(키 보관, 비밀번호 저장)과 실시간성은 아쉬운 점이어서 이후 우선 개선하고 싶다.</p>
+</body></html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>프로젝트 참여/기여 보고서 - SOUL (백엔드 중심 요약본)</title>
+<style>
+@page { size: A4; margin: 25mm 20mm; }
+body { font-family: "맑은 고딕","Malgun Gothic",sans-serif; font-size: 10.5pt; line-height: 1.6; color:#111; }
+h1 { font-size: 16pt; border-bottom: 2px solid #1f3a6e; padding-bottom: 4px; margin-top: 0; color:#1f3a6e; }
+h2 { font-size: 12.5pt; color:#1f3a6e; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 9.5pt; }
+th, td { border: 1px solid #555; padding: 4px 6px; vertical-align: top; }
+th { background: #dde6f5; }
+pre { background:#f4f4f4; border:1px solid #bbb; padding:6px; font-family: Consolas,"D2Coding",monospace; font-size: 8.5pt; white-space: pre-wrap; }
+.ph { background: #fff2a8; }
+.cover { text-align:center; }
+.pb { page-break-before: always; }
+.note { font-size: 9pt; color:#444; }
+</style></head><body>
+
+<div class="cover">
+<p style="margin-top:90px; font-size:12pt;">프로젝트 참여 · 기여 보고서</p>
+<h1 style="font-size:28pt; border:none; margin-top:50px;">SOUL 기술 교환 플랫폼</h1>
+<p style="font-size:15pt;">백엔드(서버 · REST API · 데이터베이스) 개발 및 Android 앱 연동</p>
+<p style="margin-top:120px;">
+<table style="width:70%; margin:auto; font-size:11.5pt;">
+<tr><th style="width:30%">과목명</th><td><span class="ph">[과목명]</span></td></tr>
+<tr><th>담당 교수</th><td><span class="ph">[교수님 성함]</span></td></tr>
+<tr><th>팀명</th><td><span class="ph">[팀명]</span></td></tr>
+<tr><th>담당 파트</th><td>백엔드 (주) · Android 앱 UI 및 서버 연동 (부)</td></tr>
+<tr><th>학과 / 학번</th><td><span class="ph">[학과] / [학번]</span></td></tr>
+<tr><th>이름</th><td><span class="ph">[이름]</span></td></tr>
+<tr><th>제출일</th><td>2026년 11월 10일</td></tr>
+</table></p>
+</div>
+
+<div class="pb"></div>
+<h1>목 차</h1>
+<p>1. 프로젝트 개요<br>2. 기술 스택과 시스템 구조<br>3. 백엔드 개발 내용 (주 담당)<br>4. Android 앱 개발 내용 (부 담당)<br>5. 문제 해결 과정<br>6. 실행 방법 및 시연<br>7. 회의 참여와 기여도<br>8. 한계 및 개선 계획<br>9. 느낀 점</p>
+<p class="note">※ 노란색 <span class="ph">[ ]</span> 표시는 본인이 직접 확인하여 채울 항목입니다.</p>
+
+<h1 style="margin-top:28px;">1. 프로젝트 개요</h1>
+<p>SOUL은 <b>가르칠 수 있는 기술</b>과 <b>배우고 싶은 기술</b>을 등록하면 서로 맞는 사용자를 연결해 주는 <b>기술 교환 플랫폼</b>이다. 사용자는 Android 앱으로 이용하고, 앱은 백엔드 서버의 REST API와 통신한다.</p>
+<table>
+<tr><th style="width:22%">주요 기능</th><th>설명</th></tr>
+<tr><td>회원 · 프로필</td><td>가입(아이디 중복 확인), 로그인, 프로필 수정, 아바타 업로드</td></tr>
+<tr><td>매칭 · 친구</td><td>추천 매칭, 검색, 친구 신청·수락, 차단, 별명</td></tr>
+<tr><td>채팅</td><td>텍스트·이미지, 회수·삭제, 읽음 표시, AI 번역·답장 도움</td></tr>
+<tr><td>통화</td><td>1:1 음성·영상 통화, 다인 음성방 (Agora)</td></tr>
+<tr><td>그 밖의 기능</td><td>게시판, AI 기술 퀴즈</td></tr>
+</table>
+<table>
+<tr><th style="width:22%">이름</th><th style="width:26%">담당</th><th>역할</th></tr>
+<tr><td><span class="ph">[본인]</span></td><td>백엔드(주), Android 앱(부)</td><td>서버 · REST API · DB · 외부 API 연동 / 앱 메인 UI와 서버 연동 <span class="ph">[범위 확인]</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+
+<div class="pb"></div>
+<h1>2. 기술 스택과 시스템 구조</h1>
+<table>
+<tr><th style="width:22%">구분</th><th>내용</th></tr>
+<tr><td>서버</td><td>Java, Spring Boot 3.2.5 (Spring MVC, Spring Data JPA, Hibernate), 내장 Tomcat — 포트 8080</td></tr>
+<tr><td>데이터베이스</td><td>MariaDB 13.0.2 (스키마 <code>soul</code>), HikariCP 연결 풀, MariaDB 공식 JDBC 드라이버</td></tr>
+<tr><td>외부 서비스</td><td>DeepSeek(AI 번역·퀴즈), Agora(음성·영상)</td></tr>
+<tr><td>Android 앱</td><td>Kotlin, Jetpack Compose, MVVM, Retrofit 2 / OkHttp</td></tr>
+<tr><td>개발 도구</td><td>IntelliJ IDEA, Android Studio, Maven, HeidiSQL <span class="ph">[Git 저장소 주소]</span></td></tr>
+</table>
+<pre>
+[ Android 앱 ]  --- HTTP/JSON --->  [ Spring Boot 서버 ]  --- JDBC --->  [ MariaDB (12개 테이블) ]
+      |                                     |
+      |                                     +--- HTTPS --->  [ DeepSeek API ]
+      +<--- 음성·영상 (서버는 토큰만 발급) --->  [ Agora 서버 ]
+
+서버 패키지: controller(API 9개) / service / repository(12개) / entity(12개) / client(DeepSeek) / store(임시 상태) / config
+</pre>
+
+<div class="pb"></div>
+<h1>3. 백엔드 개발 내용 (주 담당)</h1>
+<h2>3.1 데이터베이스 설계</h2>
+<p>JPA 엔티티로 테이블을 정의하고, <code>ddl-auto=update</code> 설정으로 서버 시작 시 Hibernate가 테이블을 자동 생성·갱신한다. 총 <b>12개 테이블</b>이다. <span class="ph">[HeidiSQL 테이블 목록 캡처]</span></p>
+<table>
+<tr><th style="width:24%">테이블</th><th>용도</th><th style="width:26%">제약</th></tr>
+<tr><td>users</td><td>회원 정보, 보유/희망 기술, 국적, 평점, 권한</td><td>username 유일</td></tr>
+<tr><td>friends / friend_requests</td><td>친구 관계 / 신청과 처리 상태</td><td>(userA, userB) 유일</td></tr>
+<tr><td>blocks / remarks</td><td>차단 / 친구별 별명</td><td>쌍 단위 유일</td></tr>
+<tr><td>user_matches</td><td>매칭 기록</td><td>(userA, userB) 유일</td></tr>
+<tr><td>messages</td><td>채팅 메시지(텍스트·이미지·통화 기록), 회수 여부</td><td>내용 4000자</td></tr>
+<tr><td>message_reads / message_deletions</td><td>마지막 읽은 메시지 / 본인 화면에서만 삭제</td><td>-</td></tr>
+<tr><td>chat_ratings</td><td>채팅 평가 점수</td><td>-</td></tr>
+<tr><td>board_posts / board_comments</td><td>게시글과 댓글</td><td>내용 4000자 / 2000자</td></tr>
+</table>
+<ul>
+<li>테이블 간 연결은 외래키 대신 <code>username</code> 문자열로 한다.</li>
+<li>친구·차단·별명·매칭에는 복합 유일 제약을 두어 같은 데이터가 두 번 저장되지 않게 했다.</li>
+<li>통화·음성방·AI 퀴즈처럼 오래 보관할 필요가 없는 임시 상태는 DB가 아닌 메모리(<code>Store</code>)에서 관리한다.</li>
+</ul>
+<h2>3.2 REST API (총 62개)</h2>
+<p>모든 API는 <code>/api/</code> 아래에 있고 요청·응답은 JSON이다 (이미지 업로드만 multipart).</p>
+<table>
+<tr><th style="width:16%">모듈</th><th style="width:8%">개수</th><th>주요 기능 · 업무 규칙</th></tr>
+<tr><td>사용자</td><td>9</td><td>로그인, 가입, 아이디 중복 확인(3~20자 영문·숫자·밑줄, 아이디·이름 모두 유일), 프로필, 아바타 업로드</td></tr>
+<tr><td>매칭·검색</td><td>4</td><td>추천 매칭(이미 매칭된 사용자 제외, 기술 키워드 필터), 사용자 검색</td></tr>
+<tr><td>친구·관계</td><td>10</td><td>신청(친구이거나 대기 중이면 중복 생성 안 함), 수락해야 친구 관계 생성, 차단, 별명, 관계 상태</td></tr>
+<tr><td>채팅</td><td>12</td><td>차단·친구 확인 후 전송, 4000자·이미지 10MB 제한, 2분 내 회수, 읽음 처리, AI 답장 도움</td></tr>
+<tr><td>게시판</td><td>7</td><td>작성자만 삭제, 게시글 삭제 시 댓글도 삭제, 댓글 수 자동 갱신</td></tr>
+<tr><td>통화</td><td>6</td><td>친구끼리만 통화, 상태 RINGING → ACTIVE → ENDED/REJECTED, 거절·종료 시 통화 기록 메시지 추가, Agora 토큰</td></tr>
+<tr><td>음성방</td><td>8</td><td>생성·초대·응답·퇴장·방 메시지, 최대 8명, 빈 방 자동 삭제</td></tr>
+<tr><td>AI</td><td>4</td><td>번역, 매칭 가이드, AI 대화 (실패해도 오류 대신 대체 응답)</td></tr>
+<tr><td>퀴즈</td><td>2</td><td>10문제 생성(객관식 8·주관식 2), 객관식은 서버가, 주관식은 AI가 채점, 정답률 80%/50%로 수준 판정</td></tr>
+</table>
+<p><span class="ph">[Postman 등으로 API를 호출한 캡처]</span></p>
+<h2>3.3 외부 API 연동</h2>
+<ul>
+<li><b>DeepSeek</b> (<code>client/DeepSeekClient</code>): JDK <code>HttpClient</code>로 <code>chat/completions</code>에 POST. 키는 설정 파일에서 <code>@Value</code>로 주입하며 코드에 직접 쓰지 않는다. 연결 30초·요청 120초 타임아웃. 번역·매칭 가이드·AI 대화·퀴즈 생성/채점에 사용하고, 번역 프롬프트는 한국어 존댓말, 일본어 です・ます체 등 정중한 문체를 지시한다.</li>
+<li><b>Agora</b>: 서버는 공식 라이브러리로 <b>유효기간 1시간의 RTC 토큰</b>만 만든다. 음성·영상 데이터는 앱이 Agora에 직접 연결하므로 서버를 거치지 않아 부하가 작다.</li>
+</ul>
+
+
+<div class="pb"></div>
+<h2>3.4 주요 코드</h2>
+<p><b>(1) 로그인</b> — <code>UserController</code></p>
+<pre>
+@PostMapping("/api/login")
+public LoginResponse login(@RequestBody LoginRequest req) {
+    User u = userRepository.findByUsername(req.username()).orElse(null);
+    if (u != null &amp;&amp; u.password.equals(req.password())) {
+        return new LoginResponse(true, u.name, u.username, u.email, u.avatar, u.role, "로그인 성공");
+    }
+    return new LoginResponse(false, null, null, null, null, null, "아이디 또는 비밀번호가 올바르지 않습니다.");
+}
+</pre>
+<p><b>(2) DeepSeek 호출</b> — <code>DeepSeekClient.chat()</code></p>
+<pre>
+HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create(apiUrl))
+        .timeout(Duration.ofSeconds(120))
+        .header("Authorization", "Bearer " + apiKey)
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(body)))
+        .build();
+</pre>
+<p><b>(3) Agora 토큰 발급</b> — <code>CallController.getCallToken()</code></p>
+<pre>
+int expire = 3600;
+String token = new RtcTokenBuilder2().buildTokenWithUid(
+        agoraAppId, agoraAppCertificate, channelName, uid,
+        RtcTokenBuilder2.Role.ROLE_PUBLISHER, expire, expire);
+return new CallTokenResponse(token, agoraAppId, uid, channelName);
+</pre>
+<p><b>(4) 통화 시작 시 업무 규칙</b> — <code>CallController.startCall()</code></p>
+<pre>
+if (relationService.isBlockedEither(req.caller(), req.callee())) {
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "对方已把你拉黑");
+}
+if (!relationService.isFriend(req.caller(), req.callee())) {
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "加为好友后才能通话");
+}
+</pre>
+<p class="note">※ 원본 그대로이다. (4)의 메시지는 중국어로, 앞은 "상대가 나를 차단함", 뒤는 "친구가 된 후에만 통화 가능"이라는 뜻이며 둘 다 403을 반환한다.</p>
+<h2>3.5 부가 기능</h2>
+<ul>
+<li><b>파일 업로드</b>: 아바타·채팅 이미지를 <code>uploads/</code>에 UUID를 붙여 저장하고 <code>/uploads/**</code>로 제공 (한도 20MB).</li>
+<li><b>CORS</b>: 모든 출처 허용(개발·시연용). &nbsp; <b>초기 데이터</b>: 시작 시 <code>DataSeeder</code>가 시연용 데이터를 넣는다.</li>
+</ul>
+
+<div class="pb"></div>
+<h1>4. Android 앱 개발 내용 (부 담당)</h1>
+<p>Kotlin + Jetpack Compose로 만든 앱(Kotlin 파일 60개, 약 18,700줄, 화면 24개)에서 본인은 <b>메인 UI와 서버 연동</b>을 맡았다. <span class="ph">[담당 화면 범위 확인]</span></p>
+<ul>
+<li><b>화면</b>: 하단 탭 4개(홈 · 탐색 · 매칭 · 채팅)와 왼쪽 프로필 드로어(프로필 · 설정 · 고객센터 · AI 퀴즈). 홈은 사용자가 구슬로 떠 있는 회전 3D 행성을 Canvas로 직접 그렸고, 탐색은 검색(300ms 지연 후 요청)과 카테고리 칩, 매칭은 4개 탭과 매칭 성사 다이얼로그, 채팅은 이미지 전송·회수·번역 토글을 제공한다.</li>
+<li><b>디자인</b>: 우주 테마와 유리 질감(Haze 블러)을 <code>soulGlass()</code> 하나로 적용하고, 카드·버튼·아바타 등을 공통 부품으로 재사용한다. 다크/라이트와 한·영·중 전환을 지원한다.</li>
+<li><b>서버 연동</b>: <b>화면 → ViewModel → Retrofit → 서버</b> 구조. <code>SoulApiService</code>에 위 서버 API를 함수 49개로 선언하고, ViewModel이 결과를 로딩/성공/오류 상태로 바꿔 화면에 전달한다. 서버 주소는 에뮬레이터 기본값 <code>http://10.0.2.2:8080/</code>이며 로그인 화면에서 바꿀 수 있다.</li>
+<li><b>자동 갱신</b>: 서버가 먼저 알려 주는 방식이 없어 앱이 주기적으로 묻는다 — 채팅 약 2.5초, 채팅 목록·친구 신청 약 3초, 통화 수신 약 1.5~2초.</li>
+<li><b>통화</b> <span class="ph">[담당 확인]</span>: 서버에서 받은 Agora 토큰으로 채널에 직접 입장하고, 음소거·카메라 전환 등을 제공한다.</li>
+</ul>
+<p><span class="ph">[앱 주요 화면 캡처: 로그인 / 홈 / 매칭 / 채팅 / 프로필]</span></p>
+
+<h1 style="margin-top:28px;">5. 문제 해결 과정</h1>
+<h2>5.1 서버가 DB에 연결되지 않음 (BadAuthenticationPlugin)</h2>
+<table>
+<tr><th style="width:16%">증상</th><td>서버 실행 시 <code>BadAuthenticationPlugin</code> 오류로 종료, 포트 8080이 열리지 않음</td></tr>
+<tr><th>원인 분석</th><td>DB가 MySQL이 아닌 <b>MariaDB 13</b>임을 확인. root 계정의 인증 방식은 이미 정상이라 계정 문제가 아니었고, 연결 옵션을 바꿔도 동일 → MySQL 공식 드라이버가 MariaDB 13의 접속 방식을 처리하지 못하는 것으로 결론.</td></tr>
+<tr><th>해결</th><td><code>pom.xml</code>의 드라이버를 MariaDB 공식 드라이버로 교체하고 접속 주소를 <code>jdbc:mariadb://</code>로 변경 후 재빌드.</td></tr>
+<tr><th>결과</th><td>서버가 2.5초 만에 기동하고 DB 연결·JPA 초기화 성공.</td></tr>
+</table>
+<p><span class="ph">[오류 로그 캡처]</span> <span class="ph">[정상 기동 로그 캡처]</span></p>
+<h2>5.2 그 밖의 문제</h2>
+<ul>
+<li><b>포트 8080 충돌</b>: 서버를 두 번 실행해 같은 포트를 쓰려다 실패 → 점유한 프로세스를 종료하고 한 개만 실행.</li>
+<li><b>에뮬레이터에서 서버 접속</b>: 에뮬레이터의 <code>localhost</code>는 자기 자신이라 PC 서버에 닿지 않음 → 기본 주소를 <code>10.0.2.2</code>로 설정.</li>
+</ul>
+
+<div class="pb"></div>
+<h1>6. 실행 방법 및 시연</h1>
+<ol>
+<li>MariaDB를 켜고 서버(<code>SoulBackendApplication</code>)를 실행한다 — 포트 8080, 서버는 한 개만.</li>
+<li>Android Studio에서 <code>app/soul-android</code>를 열어 에뮬레이터로 실행한다.</li>
+</ol>
+<table>
+<tr><th style="width:6%">순서</th><th style="width:28%">시연</th><th>확인 포인트</th><th style="width:16%">증빙</th></tr>
+<tr><td>1</td><td>서버 시작</td><td>DB 연결 성공, 8080 기동 로그</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>2</td><td>가입 · 로그인</td><td>중복 아이디 거부, HeidiSQL에서 users 행 확인</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>3</td><td>친구 신청 · 수락</td><td>수락했을 때만 friends 행 생성</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>4</td><td>채팅 + AI 번역</td><td>messages 저장, 번역 결과 반환</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>5</td><td>통화 · 토큰</td><td>친구만 통화 가능, 상태 변화, Agora 토큰 응답</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>6</td><td>앱 화면 흐름</td><td>앱 요청이 서버 로그에 찍히고 DB에 반영</td><td><span class="ph">[캡처]</span></td></tr>
+</table>
+
+<h1 style="margin-top:28px;">7. 회의 참여와 기여도</h1>
+<table>
+<tr><th style="width:6%">회차</th><th style="width:16%">일시</th><th>안건 / 결정</th><th style="width:22%">본인 역할</th></tr>
+<tr><td>1</td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: 주제·기능 범위]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>2</td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: API 명세, DB 구조 협의]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>3</td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: 앱-서버 연동 점검]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+<table>
+<tr><th style="width:16%">팀원</th><th style="width:14%">담당</th><th>기여 내용</th><th style="width:12%">기여도</th></tr>
+<tr><td><span class="ph">[본인]</span></td><td>백엔드(주) 앱(부)</td><td>REST API 62개, DB 테이블 12개, JPA Repository 12개, DeepSeek·Agora 연동 / 앱 메인 UI와 서버 연동(API 49개 선언)</td><td><span class="ph">[ ]%</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]%</span></td></tr>
+</table>
+<p><b>증빙</b>: <span class="ph">[Git 커밋 내역(작성자별), 회의록·채팅 캡처]</span></p>
+
+<div class="pb"></div>
+<h1>8. 한계 및 개선 계획</h1>
+<table>
+<tr><th style="width:18%">분류</th><th style="width:40%">현재 상태</th><th>개선 방안</th></tr>
+<tr><td>비밀번호</td><td>평문으로 저장·비교</td><td>BCrypt 해시 (Spring Security)</td></tr>
+<tr><td>사용자 인증</td><td>요청의 username 값으로 사용자를 식별, 로그인 토큰 없음</td><td>로그인 시 JWT 발급, 서버에서 토큰으로 확인</td></tr>
+<tr><td>비밀 정보</td><td>API 키·DB 비밀번호가 설정 파일에 있고, 앱 고객센터 화면은 DeepSeek를 앱에서 직접 호출하며 키가 앱 코드에 있음</td><td>환경 변수로 분리, 앱은 서버의 AI API만 호출</td></tr>
+<tr><td>임시 상태</td><td>통화·음성방·퀴즈가 메모리에 있어 재시작 시 소실</td><td>DB 또는 Redis로 이전, 동시성 안전 자료구조</td></tr>
+<tr><td>데이터 무결성</td><td>외래키·스키마 이력 없음, CORS 전체 허용</td><td>외래키, Flyway, 허용 도메인 제한</td></tr>
+<tr><td>실시간성</td><td>앱이 주기적으로 조회(폴링)</td><td>WebSocket 또는 푸시(FCM)</td></tr>
+<tr><td>테스트</td><td>자동화 테스트 없음</td><td>MockMvc 기반 API 테스트</td></tr>
+</table>
+
+<h1 style="margin-top:28px;">9. 느낀 점</h1>
+<p class="note">※ 초안입니다. 본인의 경험에 맞게 고쳐 쓰세요.</p>
+<p>백엔드에서 REST API와 DB, 외부 API 연동을 구현하며 서버가 앱과 데이터베이스, 외부 서비스 사이에서 하는 역할을 구체적으로 이해하게 되었다. DB 연결 오류를 해결할 때는 오류 메시지만 보고 설정을 바꾸는 대신, 실제 DB 종류와 계정 설정을 하나씩 확인해 원인을 좁혀 가는 방법을 배웠다. 앱 쪽 연동을 함께 하면서 API를 만드는 입장과 쓰는 입장을 모두 경험했고, 비밀번호 저장과 인증 토큰 같은 보안 부분은 이후 가장 먼저 개선하고 싶다.</p>
+</body></html>

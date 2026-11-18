@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>프로젝트 참여/기여 보고서 - SOUL</title>
+<style>
+@page { size: A4; margin: 25mm 20mm; }
+body { font-family: "맑은 고딕","Malgun Gothic",sans-serif; font-size: 10.5pt; line-height: 1.6; color:#111; }
+h1 { font-size: 17pt; border-bottom: 2px solid #1f3a6e; padding-bottom: 4px; margin-top: 0; color:#1f3a6e; }
+h2 { font-size: 13pt; color:#1f3a6e; margin-top: 18px; }
+h3 { font-size: 11pt; margin-top: 12px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 9.5pt; }
+th, td { border: 1px solid #555; padding: 4px 6px; vertical-align: top; }
+th { background: #dde6f5; }
+pre { background:#f4f4f4; border:1px solid #bbb; padding:6px; font-family: Consolas,"D2Coding",monospace; font-size: 8.5pt; white-space: pre-wrap; }
+.ph { background: #fff2a8; }
+.cover { text-align:center; }
+.pb { page-break-before: always; }
+.note { font-size: 9pt; color:#444; }
+</style></head><body>
+
+<div class="cover">
+<p style="margin-top:90px; font-size:12pt;">프로젝트 참여 · 기여 보고서</p>
+<h1 style="font-size:28pt; border:none; margin-top:50px;">SOUL 기술 교환 플랫폼</h1>
+<p style="font-size:15pt;">Android 앱 메인 UI 및 서버(API) 연동 개발</p>
+<p style="margin-top:120px;">
+<table style="width:70%; margin:auto; font-size:11.5pt;">
+<tr><th style="width:30%">과목명</th><td><span class="ph">[과목명]</span></td></tr>
+<tr><th>담당 교수</th><td><span class="ph">[교수님 성함]</span></td></tr>
+<tr><th>팀명</th><td><span class="ph">[팀명]</span></td></tr>
+<tr><th>담당 파트</th><td>Android 앱 — 메인 UI 및 백엔드 API 연동 (Android Studio · Kotlin)</td></tr>
+<tr><th>학과 / 학번</th><td><span class="ph">[학과] / [학번]</span></td></tr>
+<tr><th>이름</th><td><span class="ph">[이름]</span></td></tr>
+<tr><th>제출일</th><td>2026년 11월 10일</td></tr>
+</table></p>
+</div>
+
+<div class="pb"></div>
+<h1>목 차</h1>
+<p>1. 프로젝트 개요<br>
+2. 개발 환경 및 기술 스택<br>
+3. 시스템 구조<br>
+4. 연동 대상: 백엔드(서버) 개요<br>
+&nbsp;&nbsp;4.1 데이터베이스 설계 &nbsp; 4.2 REST API &nbsp; 4.3 외부 API 연동 &nbsp; 4.4 부가 기능 &nbsp; 4.5 주요 코드<br>
+5. Android 앱 개발 내용<br>
+&nbsp;&nbsp;5.1 개요 &nbsp; 5.2 앱 구조 &nbsp; 5.3 화면 구성 &nbsp; 5.4 UI 디자인 &nbsp; 5.5 서버 연동 &nbsp; 5.6 통화(Agora) &nbsp; 5.7 주요 코드 &nbsp; 5.8 기타 기능<br>
+6. 문제 해결 과정 (트러블슈팅)<br>
+7. 실행 방법 및 시연 계획<br>
+8. 참여 회의 기록<br>
+9. 기여도 및 근거<br>
+10. 한계 및 개선 계획<br>
+11. 느낀 점<br>
+부록 A. 전체 API 목록 &nbsp; 부록 B. 테이블 컬럼 명세</p>
+
+<div class="pb"></div>
+<h1>1. 프로젝트 개요</h1>
+<h2>1.1 프로젝트 소개</h2>
+<p>SOUL은 사용자가 <b>자신이 가르칠 수 있는 기술</b>과 <b>배우고 싶은 기술</b>을 등록하면, 서로 필요한 기술이 맞는 사용자를 연결해 주는 <b>기술 교환 플랫폼</b>이다. 한국어·영어·중국어 등 서로 다른 언어를 쓰는 사용자도 이용할 수 있도록 앱은 3개 언어를 지원하고, 대화에는 AI 번역 기능을 제공한다. 사용자는 <b>Android 앱</b>으로 서비스를 이용하며, 앱은 <b>백엔드 서버</b>의 REST API와 통신한다.</p>
+<h2>1.2 주요 기능</h2>
+<table>
+<tr><th style="width:22%">기능</th><th>설명</th></tr>
+<tr><td>회원 · 프로필</td><td>회원가입(아이디 중복 확인), 로그인, 프로필 수정, 아바타 업로드</td></tr>
+<tr><td>매칭 · 검색</td><td>보유/희망 기술 기반 추천 매칭, 사용자 검색</td></tr>
+<tr><td>친구 관리</td><td>친구 신청·수락·삭제, 차단, 친구 별명 설정</td></tr>
+<tr><td>채팅</td><td>텍스트·이미지 전송, 메시지 회수(2분 이내), 삭제, 읽음 표시, 안 읽은 수, 채팅 평가</td></tr>
+<tr><td>AI 기능</td><td>메시지 번역, 매칭 가이드, AI 대화, 채팅 답장 도움, 기술 테스트(문제 생성·채점)</td></tr>
+<tr><td>음성·영상 통화</td><td>1:1 통화(발신/수락/거절/종료)와 최대 8명 음성방, Agora 토큰 발급</td></tr>
+<tr><td>게시판</td><td>게시글·댓글 작성/조회/삭제</td></tr>
+<tr><td>앱 부가 기능</td><td>한국어·영어·중국어 화면 전환, 새 메시지 알림, 일정 조율·상대 평가 화면, AI 고객센터</td></tr>
+</table>
+<h2>1.3 팀 구성 및 역할</h2>
+<table>
+<tr><th>이름</th><th>담당 파트</th><th>주요 역할</th></tr>
+<tr><td><span class="ph">[본인 이름]</span></td><td>Android 앱</td><td>앱 메인 UI 구현, ViewModel · Retrofit 기반 서버 API 연동</td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td>백엔드</td><td>서버, REST API, DB 설계, 외부 API(DeepSeek/Agora) 연동 <span class="ph">[담당자와 범위 확인]</span></td></tr>
+<tr><td><span class="ph">[팀원 이름]</span></td><td><span class="ph">[앱/웹]</span></td><td><span class="ph">[화면 개발, API 호출 등]</span></td></tr>
+<tr><td><span class="ph">[팀원 이름]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+<p class="note">※ 노란색 <span class="ph">[ ]</span> 표시는 본인이 직접 확인하여 채워야 하는 항목입니다.</p>
+
+<div class="pb"></div>
+<h1>2. 개발 환경 및 기술 스택</h1>
+<table>
+<tr><th style="width:25%">구분</th><th>내용</th></tr>
+<tr><td>언어 / 프레임워크</td><td>Java, Spring Boot 3.2.5 (Spring MVC, Spring Data JPA, Hibernate 6.4.4)</td></tr>
+<tr><td>데이터베이스</td><td>MariaDB 13.0.2 (스키마명 <code>soul</code>, 포트 3306)</td></tr>
+<tr><td>DB 드라이버 / 풀</td><td>mariadb-java-client 3.3.3, HikariCP 5.0.1</td></tr>
+<tr><td>빌드 도구</td><td>Maven</td></tr>
+<tr><td>실행 환경</td><td>OpenJDK 27, 내장 Tomcat 10.1.20 (포트 8080)</td></tr>
+<tr><td>외부 서비스</td><td>DeepSeek 대규모 언어 모델 API, Agora 실시간 음성·영상</td></tr>
+<tr><td>Android 앱</td><td>Android Studio, Kotlin, Jetpack Compose(Material3), Retrofit 2 / OkHttp / Gson, Coil, Navigation Compose, Agora RTC SDK (상세는 5장)</td></tr>
+<tr><td>개발 도구</td><td>Android Studio, IntelliJ IDEA 2026.3, HeidiSQL 12.20 (DB 확인)</td></tr>
+<tr><td>공동 작업</td><td><span class="ph">[Git / GitHub 저장소 주소, 사용한 협업 도구]</span></td></tr>
+</table>
+
+
+<div class="pb"></div>
+<h1>3. 시스템 구조</h1>
+<h2>3.1 전체 구성</h2>
+<pre>
+[ Android 앱 : Kotlin / Jetpack Compose (Retrofit) ]
+        |  HTTP (JSON, multipart)
+        v
+[ Spring Boot 서버 : 포트 8080 ]  ---- HTTPS ---&gt; [ DeepSeek API : 번역, 문제 생성 ]
+  controller  (REST API, 9개)
+  service     (친구 관계, 메시지 처리)
+  repository  (Spring Data JPA, 12개)
+        |  JDBC (HikariCP)
+        v
+[ MariaDB : soul 스키마, 12개 테이블 ]
+
+[ Android 앱 ] &lt;---- 음성·영상 스트림 ----&gt; [ Agora 서버 ]   (서버는 토큰만 발급)
+</pre>
+<h2>3.2 패키지 구조 (<code>com.example.soul</code>)</h2>
+<table>
+<tr><th style="width:20%">패키지</th><th>역할</th></tr>
+<tr><td>controller</td><td>요청을 받고 JSON을 반환. User / Match / Friend / Chat / Board / Call / Room / Ai / Quiz 컨트롤러와 공통 부모 BaseApiController</td></tr>
+<tr><td>service</td><td>RelationService(친구·차단·매칭 관계 판단), MessageService(통화 기록 메시지 추가 등)</td></tr>
+<tr><td>repository</td><td>테이블별 JPA Repository 인터페이스 12개</td></tr>
+<tr><td>entity</td><td>DB 테이블과 매핑되는 클래스 12개</td></tr>
+<tr><td>client</td><td>DeepSeekClient: 외부 AI API 호출 담당</td></tr>
+<tr><td>store</td><td>메모리에 임시 보관하는 상태(통화, 음성방, AI 테스트 문제)</td></tr>
+<tr><td>config</td><td>CORS 설정, 업로드 경로 설정, 초기 데이터(DataSeeder)</td></tr>
+</table>
+
+<div class="pb"></div>
+<h1>4. 연동 대상: 백엔드(서버) 개요</h1>
+<p class="note">※ 이 장은 앱이 연동하는 서버의 구조를 설명한다. 서버 개발 담당: <span class="ph">[담당 팀원]</span>. 본인은 이 서버의 API 명세를 기준으로 앱을 연동하였고, 서버 실행·DB 연결 환경을 구성하고 연결 오류를 해결하는 일(6장)에 참여하였다.</p>
+<h2>4.1 데이터베이스 설계</h2>
+<p>JPA 엔티티로 테이블을 정의하고, <code>spring.jpa.hibernate.ddl-auto=update</code> 설정으로 서버 시작 시 Hibernate가 테이블을 자동 생성·갱신한다. 총 <b>12개 테이블</b>이며, HeidiSQL에서 생성된 것을 확인하였다. <span class="ph">[HeidiSQL 테이블 목록 스크린샷 삽입]</span></p>
+<table>
+<tr><th style="width:20%">테이블</th><th style="width:15%">엔티티</th><th>용도</th><th style="width:22%">제약 조건</th></tr>
+<tr><td>users</td><td>User</td><td>회원 정보, 보유/희망 기술과 수준, 국적, 평점, 권한</td><td>username 유일</td></tr>
+<tr><td>friends</td><td>Friend</td><td>친구 관계</td><td>(userA, userB) 유일</td></tr>
+<tr><td>friend_requests</td><td>FriendApplication</td><td>친구 신청과 처리 상태</td><td>-</td></tr>
+<tr><td>blocks</td><td>Block</td><td>차단 목록</td><td>(blocker, blocked) 유일</td></tr>
+<tr><td>remarks</td><td>Remark</td><td>친구별 별명(메모)</td><td>(owner, target) 유일</td></tr>
+<tr><td>user_matches</td><td>Match</td><td>매칭 기록</td><td>(userA, userB) 유일</td></tr>
+<tr><td>messages</td><td>Message</td><td>채팅 메시지(텍스트/이미지/통화 기록), 회수 여부</td><td>내용 4000자</td></tr>
+<tr><td>message_reads</td><td>MessageRead</td><td>상대별 마지막으로 읽은 메시지</td><td>-</td></tr>
+<tr><td>message_deletions</td><td>MessageDeletion</td><td>본인 화면에서만 삭제한 메시지</td><td>-</td></tr>
+<tr><td>chat_ratings</td><td>ChatRating</td><td>채팅방 평가 점수</td><td>-</td></tr>
+<tr><td>board_posts</td><td>BoardPost</td><td>게시글(제목, 내용, 카테고리, 좋아요, 댓글 수)</td><td>내용 4000자</td></tr>
+<tr><td>board_comments</td><td>BoardComment</td><td>게시글 댓글</td><td>내용 2000자</td></tr>
+</table>
+<p><b>설계 특징</b>: 테이블 간 연결은 외래키 대신 <code>username</code> 문자열로 한다. 중복되면 안 되는 관계(친구, 차단, 별명, 매칭)에는 복합 유일 제약을 두어 같은 데이터가 두 번 저장되지 않도록 했다. 통화·음성방·AI 테스트처럼 오래 보관할 필요가 없는 임시 상태는 DB가 아닌 메모리(<code>Store</code>)에서 관리한다. 컬럼 상세는 부록 B에 있다.</p>
+
+<div class="pb"></div>
+<h2>4.2 REST API</h2>
+<p>모든 API는 <code>/api/</code> 아래에 있으며, 요청·응답은 JSON이다. 이미지 업로드만 multipart를 사용한다. 총 <b>62개</b>이고, 모듈별 개수는 다음과 같다. 전체 목록은 부록 A에 있다.</p>
+<table>
+<tr><th style="width:18%">모듈</th><th style="width:8%">개수</th><th>주요 기능 / 업무 규칙</th></tr>
+<tr><td>사용자</td><td>9</td><td>로그인, 회원가입, 아이디 중복 확인(3~20자 영문·숫자·밑줄, 아이디와 이름 모두 유일), 프로필 조회·수정, 아바타 업로드</td></tr>
+<tr><td>매칭·검색</td><td>4</td><td>추천 매칭(본인과 이미 매칭된 사용자는 제외, 기술 키워드 필터), 사용자 검색</td></tr>
+<tr><td>친구·관계</td><td>10</td><td>신청(이미 친구이거나 대기 중이면 중복 생성 안 함), 수락 시에만 친구 관계 생성, 차단, 별명, 관계 상태 조회</td></tr>
+<tr><td>채팅</td><td>12</td><td>차단·친구 여부 확인 후 전송, 4000자 제한, 이미지 10MB 제한, 2분 내 회수, 읽음 처리, 안 읽은 수, AI 답장 도움</td></tr>
+<tr><td>게시판</td><td>7</td><td>작성자만 삭제 가능, 게시글 삭제 시 댓글도 함께 삭제, 댓글 수 자동 갱신</td></tr>
+<tr><td>통화</td><td>6</td><td>친구끼리만 통화, 상태 RINGING → ACTIVE → ENDED / REJECTED, 거절·종료 시 통화 기록 메시지 추가, Agora 토큰 발급</td></tr>
+<tr><td>음성방</td><td>8</td><td>생성, 초대(PENDING), 응답, 퇴장, 방 메시지, 최대 8명, 빈 방 자동 삭제</td></tr>
+<tr><td>AI</td><td>4</td><td>번역, 매칭 가이드, AI 대화. 실패해도 오류를 던지지 않고 대체 응답을 반환</td></tr>
+<tr><td>테스트</td><td>2</td><td>10문제 생성(객관식 8, 주관식 2), 객관식은 서버에서, 주관식은 AI가 채점, 정답률 80%/50%로 수준 판정</td></tr>
+</table>
+<p><span class="ph">[Postman 또는 앱 화면에서 API를 호출한 스크린샷 삽입]</span></p>
+
+
+<div class="pb"></div>
+<h2>4.3 외부 API 연동</h2>
+<h3>(1) DeepSeek 대규모 언어 모델</h3>
+<ul>
+<li><b>구현 위치</b>: <code>client/DeepSeekClient.java</code>. JDK 기본 <code>HttpClient</code>로 <code>https://api.deepseek.com/chat/completions</code>에 POST 요청을 보낸다 (모델 deepseek-chat, 비스트리밍).</li>
+<li><b>인증</b>: Authorization 헤더에 Bearer 토큰을 사용한다. 키 값은 설정 파일에서 <code>@Value</code>로 주입하며 코드에 직접 쓰지 않는다.</li>
+<li><b>타임아웃</b>: 연결 30초, 요청 120초. HTTP 200이 아니면 예외를 던진다.</li>
+<li><b>사용처</b>: ① 메시지 번역 ② 매칭 가이드 ③ AI 대화 ④ 채팅 답장 도움 ⑤ 기술 테스트 문제 생성 ⑥ 주관식 채점.</li>
+<li><b>번역 프롬프트</b>: 한국어는 존댓말(~습니다/~요), 일본어는 です・ます체, 중국어는 정중한 표현을 쓰도록 지시하고, 번역문만 출력하도록 제한하였다.</li>
+</ul>
+<h3>(2) Agora 실시간 음성·영상</h3>
+<ul>
+<li>서버는 Agora 공식 라이브러리(<code>RtcTokenBuilder2</code>)로 <b>유효기간 1시간의 RTC 토큰</b>만 생성한다 (<code>GET /api/call/token</code>).</li>
+<li>클라이언트는 이 토큰으로 Agora 서버에 직접 접속하므로, 음성·영상 데이터는 우리 서버를 거치지 않는다. 서버 부하가 작다.</li>
+<li>채널 이름은 두 사용자 이름을 정렬해 <code>A|B</code> 형태로 만들어, 누가 먼저 걸어도 같은 채널이 되도록 했다. 음성방은 <code>soul_room_&lt;roomId&gt;</code>를 사용한다.</li>
+</ul>
+
+<h2>4.4 부가 기능</h2>
+<table>
+<tr><th style="width:22%">항목</th><th>내용</th></tr>
+<tr><td>파일 업로드</td><td>아바타와 채팅 이미지를 서버 <code>uploads/</code> 폴더에 UUID 접두어를 붙여 저장하고, <code>/uploads/**</code> 주소로 제공한다. 업로드 한도 20MB.</td></tr>
+<tr><td>CORS</td><td>모든 출처 허용(개발·시연용). 운영 시 도메인 제한이 필요하다.</td></tr>
+<tr><td>초기 데이터</td><td><code>DataSeeder</code>가 서버 시작 시 시연용 기본 데이터를 넣는다.</td></tr>
+<tr><td>임시 상태 관리</td><td>통화, 음성방, AI 테스트 문제는 <code>Store</code> 클래스의 메모리 맵에 둔다 (재시작하면 사라짐).</td></tr>
+</table>
+
+<div class="pb"></div>
+<h2>4.5 주요 코드</h2>
+<h3>(1) 로그인 — <code>UserController</code></h3>
+<pre>
+@PostMapping("/api/login")
+public LoginResponse login(@RequestBody LoginRequest req) {
+    User u = userRepository.findByUsername(req.username()).orElse(null);
+    if (u != null &amp;&amp; u.password.equals(req.password())) {
+        return new LoginResponse(true, u.name, u.username, u.email, u.avatar, u.role, "로그인 성공");
+    }
+    return new LoginResponse(false, null, null, null, null, null, "아이디 또는 비밀번호가 올바르지 않습니다.");
+}
+</pre>
+<h3>(2) DeepSeek 호출 — <code>DeepSeekClient.chat()</code></h3>
+<pre>
+Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();
+body.put("model", model);
+body.put("messages", messages);
+body.put("stream", false);
+body.put("max_tokens", maxTokens);
+
+HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create(apiUrl))
+        .timeout(Duration.ofSeconds(120))
+        .header("Authorization", "Bearer " + apiKey)
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(body)))
+        .build();
+</pre>
+<h3>(3) Agora 토큰 발급 — <code>CallController.getCallToken()</code></h3>
+<pre>
+int expire = 3600;
+String token = new RtcTokenBuilder2().buildTokenWithUid(
+        agoraAppId, agoraAppCertificate, channelName, uid,
+        RtcTokenBuilder2.Role.ROLE_PUBLISHER, expire, expire);
+return new CallTokenResponse(token, agoraAppId, uid, channelName);
+</pre>
+<h3>(4) 통화 시작 시 업무 규칙 — <code>CallController.startCall()</code></h3>
+<pre>
+if (relationService.isBlockedEither(req.caller(), req.callee())) {
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "对方已把你拉黑");
+}
+if (!relationService.isFriend(req.caller(), req.callee())) {
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "加为好友后才能通话");
+}
+</pre>
+<p class="note">※ 위 코드는 원본 그대로이다. 오류 메시지는 앱 화면에 표시되는 문구이며, 첫 번째는 "상대가 나를 차단함", 두 번째는 "친구가 된 후에만 통화 가능"이라는 뜻이다. 차단 관계이거나 친구가 아니면 403(FORBIDDEN)을 반환한다.</p>
+
+
+<div class="pb"></div>
+<h1>5. Android 앱 개발 내용 (본인 담당: 메인 UI · 서버 연동)</h1>
+<h2>5.1 개요</h2>
+<p>Android Studio에서 <b>Kotlin + Jetpack Compose</b>로 SOUL 앱을 개발하였다. 본인은 이 앱의 <b>메인 UI(화면 구성과 디자인)</b>와 <b>백엔드 서버와의 연결(API 연동)</b>을 담당하였다. 앱은 4장에서 설명한 서버의 REST API를 호출하고, 음성·영상 통화는 Agora SDK로 처리한다.</p>
+<table>
+<tr><th style="width:25%">항목</th><th>내용</th></tr>
+<tr><td>앱 정보</td><td>applicationId <code>com.example.soul_android</code>, minSdk 26, targetSdk 36, 버전 1.1</td></tr>
+<tr><td>UI</td><td>Jetpack Compose + Material3, 유리 질감 효과(Haze 라이브러리), Manrope 글꼴</td></tr>
+<tr><td>구조</td><td>MVVM — 화면(Screen)은 ViewModel의 <code>StateFlow</code>를 관찰하고, ViewModel이 코루틴으로 API를 호출한다.</td></tr>
+<tr><td>네트워크</td><td>Retrofit 2 + OkHttp(로그 인터셉터) + Gson</td></tr>
+<tr><td>이미지</td><td>Coil (프로필·채팅 이미지)</td></tr>
+<tr><td>화면 이동</td><td>Navigation Compose (NavHost, 18개 경로)</td></tr>
+<tr><td>실시간 통화</td><td>Agora RTC SDK</td></tr>
+<tr><td>규모</td><td>Kotlin 파일 60개, 약 18,700줄, 화면 24개</td></tr>
+<tr><td>지원 언어</td><td>한국어 · 영어 · 중국어 (앱 안에서 전환 가능)</td></tr>
+</table>
+<p><span class="ph">[Android Studio 프로젝트 구조 캡처, 앱 실행 화면 캡처]</span></p>
+
+<h2>5.2 앱 구조 (<code>com.example.soul_android</code>)</h2>
+<table>
+<tr><th style="width:24%">패키지 / 파일</th><th>역할</th></tr>
+<tr><td>MainActivity, SOULApp</td><td>앱 시작점. 언어·테마·로컬 메시지 저장소를 초기화하고, SOULApp에서 NavHost로 모든 화면을 연결한다.</td></tr>
+<tr><td>ui/screens</td><td>화면 24개 (로그인, 회원가입, 홈, 탐색, 매칭, 채팅, 통화, 음성방, 프로필, AI 퀴즈 등)</td></tr>
+<tr><td>ui/viewmodels</td><td>Auth, Chat, ChatList, Match, Profile, EditProfile, UserProfile, AiQuiz, CustomerService ViewModel 9개</td></tr>
+<tr><td>ui/components, ui/theme</td><td>공통 UI 부품(Glass, Premium/Soul Components), 색상·글꼴·테마</td></tr>
+<tr><td>data/api</td><td><code>SoulApiService</code>(서버 API 49개 정의), <code>QuizApiService</code>(퀴즈 2개)</td></tr>
+<tr><td>data/remote</td><td><code>RetrofitClient</code>(퀴즈용 Retrofit 설정), 퀴즈 데이터 모델</td></tr>
+<tr><td>data</td><td>ServerConfig(서버 주소), LanguageState, ThemeState, NotifyPrefs, LocalMessageStore, DummyData 등 앱 내부 설정·저장</td></tr>
+<tr><td>call</td><td>CallManager(1:1 통화), RoomManager(음성방), CallConfig</td></tr>
+<tr><td>notifications</td><td>MessageNotifier: 새 메시지 알림</td></tr>
+</table>
+
+<div class="pb"></div>
+<h2>5.3 화면 구성과 이동 경로</h2>
+<p>앱은 <code>login</code>에서 시작한다. 로그인 후에는 하단 내비게이션 바(<code>SoulNavigationBar</code>)의 4개 탭 — <b>홈 · 탐색 · 매칭 · 채팅</b> — 으로 이동하고, 프로필 · 설정 · 고객센터 · AI 퀴즈 · 로그아웃은 왼쪽에서 밀려 나오는 <b>프로필 드로어</b>(<code>ProfileDrawer</code>)에서 접근한다. 주요 화면의 구현 내용은 다음과 같다 (코드 기준).</p>
+<table>
+<tr><th style="width:14%">화면</th><th style="width:34%">보여 주는 내용</th><th style="width:28%">UI 구현 요소 · 동작</th><th>서버 연동 (함수)</th></tr>
+<tr><td>홈</td><td>환영 문구, 사용자들이 구슬로 떠 있는 회전 3D 행성, "SOUL 매칭 시작" 버튼과 레이더 오버레이, 학습 진행 카드</td><td>LazyColumn, Canvas로 직접 그린 행성(<code>Planet3D</code>), AnimatedVisibility</td><td><code>findMatches()</code>, <code>fetchProfile()</code></td></tr>
+<tr><td>탐색</td><td>검색창, 카테고리 칩 7개(전체·언어·프로그래밍·음악·디자인·스포츠·기타), 사용자 카드(아바타·기술·매칭률)</td><td>LazyColumn + LazyRow, 검색어 입력 후 300ms 지연(디바운스), 로딩 스피너·결과 없음 문구</td><td><code>findMatches()</code>, <code>searchUsers()</code></td></tr>
+<tr><td>매칭</td><td>탭 4개(추천 · 친구 · 받은 신청 · 차단), 수락/거절/채팅/별명 버튼, 매칭 성사 다이얼로그</td><td>TabRow, 커스텀 Dialog(<code>ItsAMatchDialog</code>), 빈 상태 애니메이션, 오류 AlertDialog</td><td><code>acceptMatch()</code>, <code>respondFriendRequest()</code>, <code>removeFriend()</code>, <code>blockUser()</code>, <code>setRemark()</code></td></tr>
+<tr><td>매칭 신청</td><td>상대 카드와 기술 배지, 신청 메시지 입력, 전송</td><td>Scaffold, OutlinedTextField, 성공 다이얼로그, 오류 문구</td><td><code>getUserProfile()</code>, <code>requestFriend()</code></td></tr>
+<tr><td>채팅 목록</td><td>대화 목록, 마지막 메시지 미리보기, 안 읽은 수 배지</td><td>3초마다 갱신</td><td><code>fetchRooms()</code></td></tr>
+<tr><td>채팅</td><td>말풍선, 텍스트·이미지 전송, 메시지 회수·삭제, 번역 토글, 음성·영상 통화 버튼</td><td>2.5초마다 갱신, 전송하면 입력창을 즉시 비움(서버 응답을 기다리지 않는 화면 반영), 친구가 아니면 전송 버튼 비활성</td><td><code>fetchMessages()</code>, <code>sendMessage()</code>, <code>sendImage()</code>, <code>markRead()</code>, <code>recallMessage()</code>, <code>deleteMessage()</code>, <code>fetchRelationStatus()</code></td></tr>
+<tr><td>로그인 · 회원가입</td><td>아이디·비밀번호·자동 로그인 체크 / 가입 입력창</td><td>입력 검사: 아이디 3~20자(영문·숫자·밑줄), 이메일 형식, 비밀번호 6자 이상과 확인 일치. 로딩 오버레이, 오류 스낵바</td><td><code>login()</code>, <code>checkUsername()</code>, <code>register()</code></td></tr>
+<tr><td>프로필 설정 · 기술 선택</td><td>나이(10~100)·성별·전화·국적 필수, 사진 선택, 보유/희망 기술 칩 선택과 직접 추가</td><td>이미지 선택기, 업로드 중 상태 표시. 기술 선택은 앱 내부 상태만 사용</td><td><code>uploadFile()</code>, <code>register()</code></td></tr>
+<tr><td>프로필 · 수정 · 상대 프로필</td><td>아바타와 정보 카드. 수정 화면은 사진 변경과 저장. 상대 프로필은 매칭률·별점·5개 항목 레이더 차트·기술 표시</td><td>로딩/성공/오류 상태 분리, 오류 시 대체 프로필 표시, 아바타 업로드 진행 표시</td><td><code>fetchProfile()</code>, <code>loadProfile()</code>, <code>uploadAvatar()</code>, <code>saveProfile()</code></td></tr>
+<tr><td>AI 퀴즈</td><td>10문제(객관식·빈칸), 진행 바, 모두 답해야 제출, 점수와 수준 표시</td><td>상태 Idle / Loading / Success / Graded / Error</td><td><code>generateQuiz()</code>, <code>submitAnswers()</code></td></tr>
+<tr><td>일정 · 평가 · 설정 · 고객센터</td><td>일정(날짜·시간 선택, 종료가 시작보다 늦어야 함, 메모 300자), 평가(별 1~5, 코멘트), 설정(알림 on/off, 언어, 로그아웃), 고객센터(FAQ, AI 답변)</td><td>일정과 평가는 현재 화면 구성 중심이며 서버 저장 호출이 없음</td><td>고객센터만 AI 호출(5.5절)</td></tr>
+</table>
+<p>NavHost에 등록된 경로 18개는 다음과 같다 (화면 이름과 코드 기준으로 정리).</p>
+<table>
+<tr><th style="width:26%">경로</th><th>화면 / 용도</th></tr>
+<tr><td>login / signup</td><td>로그인, 회원가입</td></tr>
+<tr><td>profile_setup / skill_selection</td><td>가입 직후 프로필 설정, 보유·희망 기술 선택</td></tr>
+<tr><td>home / explore</td><td>홈 화면, 사용자 탐색·검색</td></tr>
+<tr><td>matches / match_request/{userId}</td><td>매칭 목록, 매칭(친구) 신청</td></tr>
+<tr><td>chat_list / chat/{userId}</td><td>채팅 목록, 1:1 채팅 (텍스트·이미지·번역·통화 시작)</td></tr>
+<tr><td>profile_tab / edit_profile</td><td>내 프로필, 프로필 수정</td></tr>
+<tr><td>user_profile/{userId}</td><td>다른 사용자 프로필 보기</td></tr>
+<tr><td>schedule/{userId}</td><td>상대와의 일정 조율 화면 (현재는 화면 구성 중심이며 서버 저장은 연결하지 않음)</td></tr>
+<tr><td>review/{userId}</td><td>상대 평가(별점) 화면</td></tr>
+<tr><td>ai_quiz</td><td>AI 기술 테스트</td></tr>
+<tr><td>settings / customer_service</td><td>설정(언어·알림), 고객센터(AI 도우미. 이 화면만 앱이 DeepSeek API를 직접 호출)</td></tr>
+</table>
+<p>통화 화면(<code>CallScreen</code>)과 음성방(<code>RoomScreen</code>)은 별도 경로 없이 오버레이(<code>CallOverlay</code>, <code>RoomOverlay</code>)로 표시되어, 어느 화면에서든 걸려 오는 통화를 받을 수 있다.</p>
+<p><b>본인 담당 범위</b>: 위 화면들의 UI 구성과, 각 화면이 서버 API를 호출하도록 ViewModel · Retrofit으로 연결한 부분. <span class="ph">[통화(Agora) 화면·AI 퀴즈 등 다른 팀원이 맡은 화면이 있으면 표시]</span></p>
+<p><span class="ph">[주요 화면 캡처: 로그인 / 홈 / 매칭 / 채팅 / 통화 / 프로필 / AI 퀴즈]</span></p>
+
+<h2>5.4 UI 디자인 시스템</h2>
+<p>모든 화면이 같은 모습을 갖도록 색상, 유리 질감, 공통 부품을 한곳에서 정의하고 재사용했다.</p>
+<table>
+<tr><th style="width:22%">항목</th><th>내용</th></tr>
+<tr><td>콘셉트</td><td>우주(은하) 테마. 다크 모드는 짙은 우주 배경 위에 3겹의 반짝이는 별과 청록·보라 성운(<code>BackgroundGalaxy</code>), 라이트 모드는 따뜻한 베이지·주황 계열.</td></tr>
+<tr><td>유리 질감</td><td><code>soulGlass()</code> 수정자 하나로 Haze 라이브러리의 뒤 배경 블러, 반투명 그라디언트, 1dp 흰 테두리, 그림자를 적용한다. 앱 전체를 <code>SoulHazeHost</code>로 감싸 블러 상태를 공유한다.</td></tr>
+<tr><td>색상</td><td>다크: 주색 청록(#00E5D0), 보조 인디고, 3차 보라, 배경 #07080D. 라이트: 주색 주황(#FF7A2F), 배경 #F3EBDD. 글자색·유리 색·테두리 색은 의미별 색(<code>SoulColors</code>)으로 묶어 테마에 따라 자동 전환.</td></tr>
+<tr><td>도형</td><td>모서리 둥글기 12 · 14 · 18 · 26 · 34dp 5단계. 상태 표시줄은 투명하게 처리해 배경과 이어지도록 함.</td></tr>
+<tr><td>공통 부품</td><td><code>SoulGlassCard</code>, <code>SoulPrimaryButton</code>(그라디언트, 로딩 중 표시), <code>SoulGhostButton</code>, <code>SoulTag</code>, <code>SoulSectionHeader</code>, <code>SoulIconTile</code>, <code>SoulDivider</code>, <code>SoulStatusDot</code>, <code>UserAvatar</code>(그라디언트 링), <code>SkillChip</code>, <code>LanguageSelector</code>, <code>ThemeToggleButton</code>, <code>PlanetLoadingOverlay</code></td></tr>
+<tr><td>상호작용</td><td><code>pressScale()</code>: 버튼을 누르면 스프링 애니메이션으로 살짝 줄어듦. 다크/라이트 전환과 한국어·영어·중국어 전환 지원.</td></tr>
+</table>
+<p><span class="ph">[다크 모드 / 라이트 모드 화면 비교 캡처]</span></p>
+<h2>5.5 서버(API) 연동 방식</h2>
+<ul>
+<li><b>Retrofit 인터페이스</b>: <code>SoulApiService</code>에 서버 엔드포인트 49개를 <code>suspend</code> 함수로 선언했다 (로그인, 회원가입, 프로필, 매칭, 친구, 채팅, 통화, 음성방, AI 등). 퀴즈 2개는 <code>QuizApiService</code>가 맡는다. 호출 대상은 4장에서 설명한 백엔드 API이다.</li>
+<li><b>서버 주소</b>: 빌드 설정의 <code>API_BASE_URL</code>에서 읽는다. 기본값은 에뮬레이터에서 PC의 서버로 접속하는 주소 <code>http://10.0.2.2:8080/</code>이다. 실제 기기용 빌드는 <code>-PapiBaseUrl=http://&lt;PC의 IP&gt;:8080/</code> 옵션으로 바꾼다.</li>
+<li><b>실행 중 주소 변경</b>: 로그인 화면에서 서버 주소를 입력하면 <code>ServerConfig</code>가 이를 SharedPreferences에 저장하므로, 서버 주소가 바뀌어도(예: 외부 접속용 터널 주소) 앱을 다시 빌드할 필요가 없다.</li>
+<li><b>타임아웃</b>: 일반 API는 연결·읽기·쓰기 15초. AI 기능(퀴즈)은 연결 30초, 읽기 60초로 길게 잡았다 (AI 응답이 느리기 때문).</li>
+<li><b>디버그 로그</b>: 디버그 빌드에서만 요청·응답 본문을 Logcat에 출력하고, 릴리스 빌드에서는 끈다.</li>
+<li><b>오류 처리</b>: ViewModel이 성공 / 로딩 / 오류 상태를 <code>StateFlow</code>로 노출하고, 화면은 이를 보고 메시지를 보여 준다.</li>
+</ul>
+<table>
+<tr><th style="width:24%">앱 기능</th><th>호출하는 서버 API</th></tr>
+<tr><td>로그인 · 가입</td><td>POST /api/login, GET /api/register/check, POST /api/register</td></tr>
+<tr><td>프로필 · 아바타</td><td>GET·PUT /api/user/profile, POST /api/user/avatar</td></tr>
+<tr><td>매칭 · 검색</td><td>GET /api/match, /api/match/mine, /api/search/users</td></tr>
+<tr><td>친구 · 차단</td><td>/api/friend/*, /api/block/*, /api/remark/set, /api/relation/status</td></tr>
+<tr><td>채팅</td><td>/api/chat/direct, /api/chat/messages, /api/chat/send, /api/chat/image, /api/chat/recall 외</td></tr>
+<tr><td>통화 · 음성방</td><td>/api/call/*, /api/room/*, GET /api/call/token</td></tr>
+<tr><td>AI</td><td>/api/translate, /api/ai/*, /api/quiz/start, /api/quiz/submit (고객센터 화면만 DeepSeek를 직접 호출)</td></tr>
+</table>
+
+<div class="pb"></div>
+<h3>ViewModel과 서버 API 대응</h3>
+<p>화면은 서버를 직접 부르지 않고 ViewModel을 거친다. ViewModel은 코루틴으로 API를 호출한 뒤 결과를 상태(<code>StateFlow</code>)로 바꾸고, 예외는 오류 상태로 변환한다.</p>
+<table>
+<tr><th style="width:20%">ViewModel</th><th style="width:36%">공개 함수</th><th>호출하는 API 함수 / 오류 처리</th></tr>
+<tr><td>AuthViewModel</td><td><code>login()</code></td><td><code>login</code> → Idle / Loading / Success / Error</td></tr>
+<tr><td>ChatViewModel</td><td><code>fetchMessages</code>, <code>sendMessage</code>, <code>sendImage</code>, <code>markRead</code>, <code>recallMessage</code>, <code>deleteMessage</code>, <code>fetchRelationStatus</code></td><td><code>createDirectChatRoom</code>, <code>sendChat</code>, <code>uploadFile</code>, <code>getMessageHistory</code>, <code>markMessagesAsRead</code>, <code>recallMsg</code>, <code>deleteMsg</code>, <code>getRelationStatus</code> → ChatUiState.Error</td></tr>
+<tr><td>ChatListViewModel</td><td><code>fetchRooms</code></td><td><code>getChatRooms</code> → ChatListUiState.Error</td></tr>
+<tr><td>MatchViewModel</td><td><code>findMatches</code>, <code>sendFriendRequest</code>, <code>respondFriendRequest</code></td><td><code>getRecommendedUsers</code>, <code>sendFriendRequest</code>, <code>respondFriendRequest</code> → MatchUiState.Error</td></tr>
+<tr><td>ProfileViewModel</td><td><code>fetchProfile</code>, <code>updateProfile</code></td><td><code>getUserProfile</code>, <code>updateProfile</code> (기술 문자열을 쉼표로 나눠 목록으로 변환)</td></tr>
+<tr><td>EditProfileViewModel</td><td><code>loadProfile</code>, <code>updateAvatar</code>, <code>updateProfile</code></td><td><code>getUserProfile</code>, <code>uploadFile</code>, <code>updateProfile</code> → EditProfileUiState.Error</td></tr>
+<tr><td>AiQuizViewModel</td><td><code>generateQuiz</code>, <code>submitAnswers</code></td><td>퀴즈용 Retrofit(<code>RetrofitClient.quizApi</code>). 주제와 사용자 이름을 먼저 검사</td></tr>
+</table>
+<h3>자동 갱신(폴링) 주기</h3>
+<p>서버가 앱으로 먼저 알려 주는 푸시 방식이 없어서, 앱이 일정 간격으로 서버에 새 소식을 묻는다.</p>
+<table>
+<tr><th style="width:30%">대상</th><th style="width:22%">간격</th><th>위치</th></tr>
+<tr><td>채팅 메시지</td><td>약 2.5초</td><td>ChatScreen</td></tr>
+<tr><td>채팅 목록</td><td>약 3초</td><td>ChatListScreen</td></tr>
+<tr><td>친구 신청 목록</td><td>약 3초</td><td>MatchesScreen</td></tr>
+<tr><td>걸려 오는 통화</td><td>약 1.5~2초</td><td>CallManager</td></tr>
+<tr><td>새 메시지 알림(안 읽은 수 확인)</td><td>약 5초</td><td>SOULApp</td></tr>
+</table>
+<p class="note">※ 구현이 단순하고 서버 수정이 필요 없지만, 사용하지 않을 때도 요청이 계속 나가고 반응이 최대 몇 초 늦다. 개선 방안은 10장에 정리했다.</p>
+<h2>5.6 음성·영상 통화 (Agora) 구현</h2>
+<p><code>call/CallManager.kt</code>가 1:1 통화 전체를 맡고, <code>RoomManager.kt</code>가 다인 음성방을 맡는다. 통화 화면과 음성방은 <code>CallOverlay</code>, <code>RoomOverlay</code>로 앱 어디서나 표시된다.</p>
+<table>
+<tr><th style="width:18%">단계</th><th>동작</th></tr>
+<tr><td>① 발신</td><td><code>startCall()</code>이 서버에 통화 시작을 요청(POST /api/call/start)하고, 상대가 받을 때까지 서버 상태를 주기적으로 확인(<code>pollOutgoingStatus</code>)한다.</td></tr>
+<tr><td>② 수신</td><td>로그인 후 <code>startIncomingPolling()</code>이 약 1.5~2초 간격으로 서버에 걸려 온 통화가 있는지 묻는다(GET /api/call/incoming). 있으면 오버레이로 수락/거절 화면을 띄운다. 알림 서버(푸시) 없이 폴링으로 구현했다.</td></tr>
+<tr><td>③ 토큰 받기</td><td>통화가 성사되면 서버의 <code>GET /api/call/token</code>으로 Agora 임시 토큰을 받는다. 앱에는 Agora 인증서를 두지 않는다.</td></tr>
+<tr><td>④ 채널 입장</td><td><code>RtcEngine.joinChannel()</code>로 Agora에 직접 접속한다. 영상 통화일 때만 카메라를 켠다.</td></tr>
+<tr><td>⑤ 통화 중</td><td>내 음소거, 카메라 켜기/끄기, 카메라 전환, 상대 소리 끄기를 제공한다. 상대 입장·퇴장은 <code>IRtcEngineEventHandler</code> 콜백으로 감지한다.</td></tr>
+<tr><td>⑥ 종료</td><td><code>endCall()</code>이 서버에 종료를 알리고(POST /api/call/end) 채널을 나간다. 거절·취소도 같은 방식이다.</td></tr>
+</table>
+<p>이를 위해 AndroidManifest에 <code>INTERNET</code>, <code>RECORD_AUDIO</code>, <code>CAMERA</code>, <code>MODIFY_AUDIO_SETTINGS</code>, <code>BLUETOOTH</code>, <code>POST_NOTIFICATIONS</code> 권한을 선언했다. <span class="ph">[통화 화면 캡처: 발신 / 수신 / 영상 통화 중]</span></p>
+
+<h2>5.7 주요 코드</h2>
+<h3>(1) 로그인 — <code>AuthViewModel.login()</code> (가독성을 위해 줄바꿈을 정리하고 일부 생략)</h3>
+<pre>
+fun login(username: String, pass: String) {
+    viewModelScope.launch {
+        _loginResult.value = LoginResult.Loading
+        try {
+            val response = apiService.login(LoginRequest(username, pass))
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body?.success == true) {
+                    _loginResult.value = LoginResult.Success(username = body.username ?: username)
+                } else {
+                    _loginResult.value = LoginResult.Error(body?.message ?: "Login failed")
+                }
+            } else {
+                _loginResult.value = LoginResult.Error("Server error: ${response.code()}")
+            }
+        } catch (e: Exception) { /* 네트워크 오류 메시지 처리 */ }
+    }
+}
+</pre>
+<p>화면은 <code>loginResult</code>(StateFlow)를 관찰하다가 <code>Success</code>가 되면 홈으로 이동한다. 이것이 앱 전체에서 쓰는 <b>MVVM 패턴</b>의 기본 형태이다.</p>
+<h3>(2) 서버 API 선언 — <code>SoulApiService</code> (Retrofit)</h3>
+<pre>
+@POST("api/login")
+suspend fun login(@Body request: LoginRequest): Response&lt;LoginResponse&gt;
+
+@GET("api/chat/messages")
+suspend fun getChatMessages(
+    @Query("me") me: String,
+    @Query("partner") partner: String
+): List&lt;BackendChatMessage&gt;
+</pre>
+<p>인터페이스에 함수만 선언하면 Retrofit이 HTTP 요청 코드를 만들어 준다. 4장의 <code>POST /api/login</code>, <code>GET /api/chat/messages</code>와 같은 경로이다.</p>
+<h3>(3) Agora 채널 입장 — <code>CallManager.joinChannel()</code></h3>
+<pre>
+val isVideo = callType == "VIDEO"
+if (isVideo) {
+    e.enableVideo()
+}
+val fullChannel = CallConfig.CHANNEL_PREFIX + channel
+
+// 从后端获取临时 Token（App 证书服务端生成，生产级安全）
+val token = try {
+    api.getCallToken(fullChannel, 0).token ?: ""
+} catch (ex: Exception) {
+    Log.e(TAG, "getCallToken failed", ex)
+    ""
+}
+
+val options = ChannelMediaOptions()
+options.channelProfile = Constants.CHANNEL_PROFILE_COMMUNICATION
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+options.autoSubscribeAudio = true
+options.autoSubscribeVideo = true
+options.publishMicrophoneTrack = true
+options.publishCameraTrack = isVideo
+val ret = e.joinChannel(token, fullChannel, 0, options)
+</pre>
+<p class="note">※ 위 코드는 원본 그대로이다. 주석(중국어)의 뜻은 "백엔드에서 임시 토큰을 받는다 (앱 인증서는 서버에서 생성하므로 보안상 안전)"이다. 4장의 백엔드 토큰 발급 코드와 이어지는 부분이다.</p>
+
+<h2>5.8 그 밖의 기능</h2>
+<table>
+<tr><th style="width:22%">기능</th><th>구현</th></tr>
+<tr><td>다국어</td><td><code>AppLanguage</code>(한국어 · 영어 · 중국어)와 <code>LanguageState</code>. 설정 화면에서 바꾸면 앱 문구가 즉시 바뀌고, 선택값은 기기에 저장된다.</td></tr>
+<tr><td>알림</td><td><code>MessageNotifier</code>가 새 메시지 알림을 만들고, <code>NotifyPrefs</code>가 알림 on/off를 저장한다.</td></tr>
+<tr><td>로컬 저장</td><td><code>LocalMessageStore</code>, <code>ThemeState</code>, <code>ServerConfig</code>가 SharedPreferences에 설정과 일부 데이터를 저장한다.</td></tr>
+<tr><td>채팅</td><td><code>ChatViewModel</code>이 메시지 조회, 텍스트·이미지 전송, 회수, 삭제, 읽음 처리, 친구 관계 확인·신청을 처리한다 (서버의 채팅 API 호출).</td></tr>
+<tr><td>AI 퀴즈</td><td><code>AiQuizViewModel</code>이 서버의 퀴즈 API로 문제를 받아 화면에 보여 주고 답을 제출한다.</td></tr>
+<tr><td>빌드</td><td>디버그/릴리스 빌드 분리, 릴리스는 서명 설정 포함, ARM 기기용 ABI 필터로 APK 크기 축소.</td></tr>
+</table>
+<p><span class="ph">[설정 화면(언어 전환), 알림, 채팅 화면 캡처]</span></p>
+
+
+<div class="pb"></div>
+<h1>6. 문제 해결 과정 (트러블슈팅)</h1>
+<h2>6.1 서버가 DB에 연결되지 않음 — BadAuthenticationPlugin</h2>
+<table>
+<tr><th style="width:18%">증상</th><td>서버 실행 시 <code>java.sql.SQLException: !AuthenticationProvider.BadAuthenticationPlugin!</code> 가 발생하고 서버가 종료됨. 포트 8080이 열리지 않음.</td></tr>
+<tr><th>원인 분석</th><td>① 3306 포트에서 실행 중인 DB가 MySQL이 아니라 <b>MariaDB 13.0.2</b>임을 HeidiSQL 접속 화면과 Windows 서비스 목록으로 확인. ② <code>mysql.user</code> 조회 결과 root 계정의 인증 플러그인은 이미 <code>mysql_native_password</code>여서 계정 설정은 문제가 아님. ③ JDBC URL에 인증 플러그인 옵션을 지정해 보았으나 동일 오류 → MariaDB 13의 핸드셰이크를 MySQL 공식 드라이버(mysql-connector-j 8.3.0)가 처리하지 못하는 것으로 결론.</td></tr>
+<tr><th>해결</th><td><code>pom.xml</code>의 드라이버를 <code>org.mariadb.jdbc:mariadb-java-client</code>(Spring Boot 관리 버전 3.3.3)로 교체하고, JDBC URL 접두어를 <code>jdbc:mysql://</code>에서 <code>jdbc:mariadb://</code>로 변경한 뒤 Maven으로 다시 패키징.</td></tr>
+<tr><th>결과</th><td><code>Started SoulBackendApplication in 2.519 seconds</code>, HikariPool이 <code>org.mariadb.jdbc.Connection</code>으로 연결 성공, JPA 초기화 완료.</td></tr>
+</table>
+<p><span class="ph">[오류 로그 스크린샷]</span> &nbsp; <span class="ph">[해결 후 정상 실행 로그 스크린샷]</span></p>
+<h2>6.2 포트 8080 충돌</h2>
+<p><b>증상</b>: <code>Web server failed to start. Port 8080 was already in use.</code> &nbsp; <b>원인</b>: 같은 서버를 두 번 실행하여 두 프로세스가 같은 포트를 사용하려 함. &nbsp; <b>해결</b>: 포트를 점유한 java 프로세스를 확인해 종료하고 서버를 하나만 실행.</p>
+<h2>6.3 개발 환경 설정</h2>
+<p>PATH에 <code>java</code>, <code>mvn</code>이 없어 명령줄 실행이 되지 않았다. IntelliJ의 JDK와 내장 Maven을 직접 지정하여 빌드·실행하였다.</p>
+<h2>6.4 앱 개발 중 문제 해결</h2>
+<p><b>에뮬레이터에서 서버에 접속</b>: 에뮬레이터 안에서 <code>localhost</code>는 에뮬레이터 자신을 가리켜 PC에서 실행 중인 서버에 접속되지 않는다. 그래서 앱의 기본 서버 주소를 PC를 가리키는 특수 주소 <code>http://10.0.2.2:8080/</code>로 설정하고, 실제 기기에서는 PC의 IP나 외부 터널 주소를 로그인 화면에서 입력하도록 했다.</p>
+<p><span class="ph">[앱 개발 중 실제로 겪은 문제와 해결 과정을 추가 (예: 권한, 화면 오류, 통화 연결 문제 등)]</span></p>
+<h2>6.5 참고: Hibernate 경고</h2>
+<p>시작 로그의 <code>Can't DROP INDEX ... check that it exists</code> 경고는 <code>ddl-auto=update</code>가 존재하지 않는 오래된 인덱스를 정리하려다 나는 것으로, 동작에는 영향이 없다.</p>
+
+
+<div class="pb"></div>
+<h1>7. 실행 방법 및 시연 계획</h1>
+<h2>7.1 실행 방법</h2>
+<ol>
+<li>MariaDB 서비스(서비스 이름 <code>MariaDB</code>)가 실행 중이고 <code>soul</code> 스키마가 있는지 확인한다.</li>
+<li>IntelliJ에서 <code>SoulBackendApplication</code>을 실행한다 (서버는 한 개만 실행).</li>
+<li>로그에 <code>Tomcat started on port 8080</code>, <code>Started SoulBackendApplication</code>이 나오면 정상이다.</li>
+</ol>
+<p>명령줄로 실행할 때는 <code>mvn -DskipTests package</code> 후 <code>java -jar target/soul-backend-0.0.1-SNAPSHOT.jar</code>를 사용한다.</p>
+<h3>Android 앱 실행</h3>
+<ol><li>백엔드 서버를 먼저 실행한다 (포트 8080).</li><li>Android Studio에서 <code>app/soul-android</code> 프로젝트를 열고 Gradle 동기화를 한다.</li><li>에뮬레이터에서 실행하면 서버 주소가 <code>http://10.0.2.2:8080/</code>로 연결된다. 실제 기기는 <code>-PapiBaseUrl=http://&lt;PC의 IP&gt;:8080/</code>로 빌드하거나 로그인 화면에서 서버 주소를 입력한다.</li><li>통화 기능은 마이크·카메라 권한을 허용해야 한다.</li></ol>
+<h2>7.2 시연 시나리오 (본인 담당: Android 앱 UI · 서버 연동)</h2>
+<table>
+<tr><th style="width:6%">순서</th><th style="width:28%">시연 내용</th><th>확인 포인트</th><th style="width:20%">증빙</th></tr>
+<tr><td>1</td><td>서버 시작</td><td>DB 연결 성공, 8080 포트 기동 로그</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>2</td><td>회원가입 · 로그인</td><td>중복 아이디 거부, 로그인 성공/실패 응답, DB의 users 행 확인(HeidiSQL)</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>3</td><td>매칭 · 친구 신청/수락</td><td>수락 시에만 friends 행 생성</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>4</td><td>채팅 + AI 번역</td><td>메시지 저장(messages), 번역 결과 반환</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>5</td><td>통화 시작 / 토큰 발급</td><td>친구만 통화 가능, 상태 변화, Agora 토큰 응답</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>6</td><td>게시판 · 기술 테스트</td><td>작성자만 삭제, AI 문제 생성과 채점</td><td><span class="ph">[캡처]</span></td></tr>
+<tr><td>7</td><td>앱 화면 흐름 (로그인 → 홈 → 매칭 → 채팅 → 통화)</td><td>앱에서 보낸 요청이 서버 로그에 찍히고 DB에 반영됨, 언어 전환, 음성·영상 통화 연결</td><td><span class="ph">[캡처/영상]</span></td></tr>
+</table>
+<p class="note">※ 시연은 앱/웹 화면과 서버 로그, HeidiSQL을 함께 보여주면 API와 DB가 실제로 연결되어 있음을 설명하기 좋다. 코드 평가에서는 4.5절의 파일(<code>UserController</code>, <code>DeepSeekClient</code>, <code>CallController</code>)을 먼저 열 수 있도록 준비한다.</p>
+
+<div class="pb"></div>
+<h1>8. 참여 회의 기록</h1>
+<p>본인이 참석한 회의와 그 안에서 맡은 일을 기록한다. <span class="ph">[날짜·내용은 실제 기록으로 채울 것]</span></p>
+<table>
+<tr><th style="width:6%">회차</th><th style="width:16%">일시</th><th style="width:14%">방식</th><th>주요 안건 / 결정 사항</th><th style="width:20%">본인 역할</th></tr>
+<tr><td>1</td><td><span class="ph">[ ]</span></td><td><span class="ph">[대면/온라인]</span></td><td><span class="ph">[예: 주제 선정, 기능 범위 결정]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>2</td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: API 명세, DB 구조 협의]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>3</td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[예: 앱-서버 연동 점검]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td>4</td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+<p><span class="ph">[회의록, 단체 채팅방 캡처 등 증빙 삽입]</span></p>
+
+<h1 style="margin-top:30px;">9. 기여도 및 근거</h1>
+<h2>9.1 담당 산출물</h2>
+<table>
+<tr><th style="width:26%">산출물</th><th style="width:12%">수량</th><th>근거 (파일 위치)</th></tr>
+<tr><td>(참고) 서버 REST API</td><td>62개</td><td><code>controller/</code> 9개 컨트롤러 + 공통 <code>BaseApiController</code></td></tr>
+<tr><td>(참고) 서버 DB 테이블</td><td>12개</td><td><code>entity/</code>, HeidiSQL 테이블 목록 캡처</td></tr>
+<tr><td>(참고) 서버 Repository</td><td>12개</td><td><code>repository/</code> (시작 로그: Found 12 JPA repository interfaces)</td></tr>
+<tr><td>(참고) 서버의 외부 API 연동</td><td>2건</td><td><code>client/DeepSeekClient.java</code>, <code>CallController</code>의 Agora 토큰 발급</td></tr>
+<tr><td>(참고) 서버 서비스 로직</td><td>2개</td><td><code>service/RelationService</code>, <code>service/MessageService</code></td></tr>
+<tr><td><b>★ Android 앱 메인 UI</b></td><td>화면 24개, Kotlin 60개 파일 (약 18,700줄), 공통 UI 부품 · 테마</td><td><code>app/soul-android</code> (5장), Android Studio 프로젝트 구조 캡처</td></tr>
+<tr><td><b>★ 앱의 서버 API 연동</b></td><td>엔드포인트 51개</td><td><code>SoulApiService</code>(49개), <code>QuizApiService</code>(2개)</td></tr>
+<tr><td>★ 앱 음성·영상 통화 <span class="ph">[담당 확인]</span></td><td>1건</td><td><code>call/CallManager.kt</code>, <code>call/RoomManager.kt</code></td></tr>
+<tr><td>환경 문제 해결</td><td>1건</td><td>6장 (MariaDB 드라이버 교체)</td></tr>
+</table>
+<h2>9.2 기여도 자기 평가</h2>
+<table>
+<tr><th style="width:18%">팀원</th><th style="width:16%">담당 파트</th><th>주요 기여 내용</th><th style="width:12%">기여도(%)</th></tr>
+<tr><td><span class="ph">[본인]</span></td><td>Android 앱</td><td>메인 UI 구현, ViewModel · Retrofit 기반 서버 API 연동</td><td><span class="ph">[ ]</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+<tr><td><span class="ph">[팀원]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td><td><span class="ph">[ ]</span></td></tr>
+</table>
+<p><b>증빙 자료</b>: <span class="ph">[Git 커밋 내역 캡처(작성자별 커밋 수), 저장소 Contributors 화면, 코드 리뷰/이슈 기록 등]</span></p>
+
+<div class="pb"></div>
+<h1>10. 한계 및 개선 계획</h1>
+<table>
+<tr><th style="width:18%">분류</th><th style="width:36%">현재 상태</th><th>개선 방안</th></tr>
+<tr><td>비밀번호</td><td>평문 저장·비교</td><td>BCrypt 해시(Spring Security의 BCryptPasswordEncoder)</td></tr>
+<tr><td>사용자 인증</td><td>요청의 username 값으로 사용자를 식별. 로그인 토큰이 없다.</td><td>로그인 시 JWT 발급, 서버에서 토큰으로 사용자 확인</td></tr>
+<tr><td>비밀 정보</td><td>API 키·DB 비밀번호가 설정 파일에 있음</td><td>환경 변수 또는 비밀 관리 도구로 분리, 저장소에 올리지 않기</td></tr>
+<tr><td>CORS</td><td>모든 출처 허용</td><td>허용 도메인 목록으로 제한</td></tr>
+<tr><td>임시 상태</td><td>통화·음성방·AI 테스트가 메모리에 있어 재시작 시 소실, 동시 접근에 취약</td><td>ConcurrentHashMap 사용 또는 DB/Redis로 이전</td></tr>
+<tr><td>실시간성</td><td>통화 상태를 클라이언트가 주기적으로 조회(폴링)</td><td>WebSocket 또는 푸시 알림</td></tr>
+<tr><td>데이터 무결성</td><td>외래키 없음, 스키마 변경 이력 없음</td><td>외래키 추가, Flyway로 마이그레이션 관리</td></tr>
+<tr><td>AI 호출</td><td>동기 호출(최대 120초 대기), 재시도·캐시 없음</td><td>비동기 처리, 결과 캐시, 장애 시 대체 응답</td></tr>
+<tr><td>앱의 API 키</td><td>AI 고객센터 화면이 DeepSeek API를 앱 코드에서 직접 호출하고, API 키가 앱 소스에 들어 있음 (설치 파일에서 추출될 수 있음)</td><td>서버의 AI API를 거쳐 호출하도록 바꾸고, 키는 서버에만 보관</td></tr>
+<tr><td>앱 보안 설정</td><td>릴리스 서명 정보가 빌드 설정 파일에 있음, HTTP(암호화 없음) 통신 허용, 코드 난독화 미적용</td><td>서명 정보를 별도 파일/환경 변수로 분리, HTTPS 적용 후 HTTP 차단, R8 난독화 활성화</td></tr>
+<tr><td>앱 기능 완성도</td><td>일정·평가 화면이 서버와 연결되지 않음(서버에 평가 API가 있으나 앱 평가 화면은 아직 호출하지 않음), 채팅·통화·알림을 주기적 조회(폴링)로 갱신</td><td>일정 API 추가, 푸시 알림(FCM) 또는 WebSocket 사용</td></tr>
+<tr><td>테스트</td><td>자동화 테스트 없음(수동 확인)</td><td>MockMvc 기반 API 테스트 추가</td></tr>
+</table>
+
+<h1 style="margin-top:30px;">11. 느낀 점</h1>
+<p class="note">※ 아래는 초안입니다. 본인의 경험에 맞게 직접 고쳐 쓰세요.</p>
+<p>이번 프로젝트에서 Android 앱의 메인 UI와 서버 연동을 맡아, 화면이 ViewModel과 Retrofit을 거쳐 서버 API와 데이터를 주고받는 흐름을 구체적으로 이해하게 되었다. 또한 서버가 데이터베이스와 외부 서비스 사이에서 어떤 역할을 하는지 구체적으로 이해하게 되었다. 특히 DB 연결 오류를 해결하는 과정에서, 오류 메시지만 보고 설정을 바꾸는 것이 아니라 실제 DB 종류와 버전, 계정 설정을 하나씩 확인해 원인을 좁혀 가는 방법을 배웠다. 한편 비밀번호 평문 저장, 인증 토큰 부재처럼 보안 측면에서 부족한 점이 남아 있어, 이후에는 이를 우선적으로 개선하고 싶다.</p>
+
+<div class="pb"></div>
+<h1>부록 A. 전체 API 목록 (62개)</h1>
+<table>
+<tr><th style="width:14%">모듈</th><th>메서드와 경로</th></tr>
+<tr><td>사용자 (9)</td><td>POST /api/login · GET /api/register/check · POST /api/register · GET /api/user/profile · PUT /api/user/profile · POST /api/user/avatar · GET /api/profile · PUT /api/profile · POST /api/upload</td></tr>
+<tr><td>매칭·검색 (4)</td><td>GET /api/match · GET /api/match/mine · GET /api/match/profile/{userId} · GET /api/search/users</td></tr>
+<tr><td>친구·관계 (10)</td><td>POST /api/friend/request · POST /api/friend/respond · GET /api/friend/requests · POST /api/friend/remove · GET /api/friend/list · POST /api/block/add · POST /api/block/remove · GET /api/block/list · POST /api/remark/set · GET /api/relation/status</td></tr>
+<tr><td>채팅 (12)</td><td>GET /api/chat/rooms · POST /api/chat/direct · GET /api/chat/messages · POST /api/chat/send · POST /api/chat/image · POST /api/chat/recall · POST /api/chat/delete · POST /api/chat/read · GET /api/chat/unread · GET /api/chat/rating · POST /api/chat/rating · POST /api/chat/ai-help</td></tr>
+<tr><td>게시판 (7)</td><td>GET /api/board · GET /api/board/{id} · POST /api/board · DELETE /api/board/{id} · GET /api/comments/{postId} · POST /api/comments/{postId} · DELETE /api/comments/{commentId}</td></tr>
+<tr><td>통화 (6)</td><td>POST /api/call/start · POST /api/call/answer · POST /api/call/end · GET /api/call/status · GET /api/call/incoming · GET /api/call/token</td></tr>
+<tr><td>음성방 (8)</td><td>POST /api/room/create · POST /api/room/invite · POST /api/room/respond · GET /api/room/status · GET /api/room/incoming · POST /api/room/leave · POST /api/room/message · GET /api/room/messages</td></tr>
+<tr><td>AI (4)</td><td>POST /api/translate · GET /api/ai/guide · POST /api/ai/chat · POST /api/ai/translate</td></tr>
+<tr><td>테스트 (2)</td><td>POST /api/quiz/start · POST /api/quiz/submit</td></tr>
+</table>
+
+<h1 style="margin-top:30px;">부록 B. 테이블 컬럼 명세</h1>
+<table>
+<tr><th style="width:18%">테이블</th><th>컬럼 (타입은 Java 기준, id는 자동 증가 Long)</th></tr>
+<tr><td>users</td><td>id, username(유일), password, name, email, avatar, gender, age, skillOffer, skillWant, skillOfferLevel, skillWantLevel, nationality, averageRating, ratingCount, role, phone, address, timeSlot</td></tr>
+<tr><td>friends</td><td>id, userA, userB</td></tr>
+<tr><td>friend_requests</td><td>id, fromUser, toUser, message, status, createdAt</td></tr>
+<tr><td>blocks</td><td>id, blocker, blocked</td></tr>
+<tr><td>remarks</td><td>id, owner, target, remark</td></tr>
+<tr><td>user_matches</td><td>id, userA, userB</td></tr>
+<tr><td>messages</td><td>id, senderUsername, receiverUsername, content, type, mediaUrl, createdAt, recalled(기본 false)</td></tr>
+<tr><td>message_reads</td><td>id, username, partner, lastReadMessageId</td></tr>
+<tr><td>message_deletions</td><td>id, messageId, username</td></tr>
+<tr><td>chat_ratings</td><td>id, roomId, username, score</td></tr>
+<tr><td>board_posts</td><td>id, username, name, avatar, title, content, category, date, likes(기본 0), commentCount(기본 0)</td></tr>
+<tr><td>board_comments</td><td>id, postId, username, author, content, date</td></tr>
+</table>
+</body></html>
